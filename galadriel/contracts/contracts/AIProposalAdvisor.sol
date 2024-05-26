@@ -7,11 +7,12 @@ import "./interfaces/IOracle.sol";
 
 // Oracle contract fetches messages from this contract (callback), therefore messages aren't explicitly passed to the oracle
 
+// @todo add restriction to prevent anyone from calling getProposalAdvise
 contract AIProposalAdvisor {
 
 	address private owner;
 	address public oracleAddress;
-	string public setupPrompt;
+	string public instruction;
 	string public name;
 
 	mapping(uint => string) public proposals;
@@ -19,10 +20,10 @@ contract AIProposalAdvisor {
 
 	event OracleAddressUpdated(address indexed newOracleAddress);
 
-	constructor(address _oracleAddress, string memory _setupPrompt, string memory _name) {
+	constructor(address _oracleAddress, string memory _instruction, string memory _name) {
 		owner = msg.sender;
 		oracleAddress = _oracleAddress;
-		setupPrompt = _setupPrompt;
+		instruction = _instruction;
 		name = _name;
 	}
 
@@ -59,7 +60,7 @@ contract AIProposalAdvisor {
 
 	function getMessageHistoryContents(uint proposalId) public view returns (string[] memory) {
 		string[] memory messages = new string[](1);
-		messages[0] = concatenateStrings(setupPrompt, proposals[proposalId]);
+		messages[0] = concatenateStrings(instruction, proposals[proposalId]);
 		return messages;
 	}
 
