@@ -6,12 +6,11 @@ async function main() {
     throw new Error("ORACLE_ADDRESS env variable is not set.");
   }
   const oracleAddress: string = process.env.ORACLE_ADDRESS;
-  await deployAIProposalAdvisor(oracleAddress);
+  await deployAIProposalAdvisor(oracleAddress, "You are a politician. Please answer ONLY with 'N' for No or 'Y' for Yes. No other characters included in the response. Please answer the following proposal as instructed: ", "Vitalik");
 }
 
-
-async function deployAIProposalAdvisor(oracleAddress: string) {
-  const contract = await ethers.deployContract("AIProposalAdvisor", [oracleAddress], {});
+async function deployAIProposalAdvisor(oracleAddress: string, setupPrompt: string, name: string) {
+  const contract = await ethers.deployContract("AIProposalAdvisor", [oracleAddress, setupPrompt, name], {});
 
   await contract.waitForDeployment();
 

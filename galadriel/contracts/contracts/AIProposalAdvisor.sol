@@ -9,53 +9,100 @@ import "./interfaces/IOracle.sol";
 
 contract AIProposalAdvisor {
 
-    struct Message {
-        string role;
-        string content;
-    }
+	address private owner;
+	address public oracleAddress;
+	string public setupPrompt;
+	string public name;
 
-	uint public chatCount;
-	mapping(uint => string) public chatResponses;
+	mapping(uint => string) public proposals;
+	mapping(uint => string) public advises;
 
-	mapping(address => string) public voterInterests;
+	event OracleAddressUpdated(address indexed newOracleAddress);
 
-    address private owner;
-    address public oracleAddress;
+	constructor(address _oracleAddress, string memory _setupPrompt, string memory _name) {
+		owner = msg.sender;
+		oracleAddress = _oracleAddress;
+		setupPrompt = _setupPrompt;
+		name = _name;
+	}
 
-    event OracleAddressUpdated(address indexed newOracleAddress);
+	modifier onlyOwner() {
+		require(msg.sender == owner, "Caller is not owner");
+		_;
+	}
 
-    constructor(address initialOracleAddress) {
-        owner = msg.sender;
-        oracleAddress = initialOracleAddress;
-    }
+	modifier onlyOracle() {
+		require(msg.sender == oracleAddress, "Caller is not oracle");
+		_;
+	}
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Caller is not owner");
-        _;
-    }
+	function setOracleAddress(address newOracleAddress) public onlyOwner {
+		oracleAddress = newOracleAddress;
+		emit OracleAddressUpdated(newOracleAddress);
+	}
 
-    modifier onlyOracle() {
-        require(msg.sender == oracleAddress, "Caller is not oracle");
-        _;
-    }
+	// @todo stop same proposalId from being used multiple times
+	function getProposalAdvise(string memory proposal, uint proposalId) public {
+		proposals[proposalId] = proposal;
+		IOracle(oracleAddress).createLlmCall(proposalId);
+	}
 
-    function setOracleAddress(address newOracleAddress) public onlyOwner {
-        oracleAddress = newOracleAddress;
-        emit OracleAddressUpdated(newOracleAddress);
-    }
+	// @todo handle errors: standard error message for every agent?
+	function onOracleLlmResponse(
+		uint proposalId,
+		string memory response,
+		string memory /*errorMessage*/
+	) public onlyOracle {
+		advises[proposalId] = response;
+		// @todo extract answer (y, n) and loop and store it
+	}
 
-    function getProposalAdvise(string memory message) public returns (uint i) {
-		IOracle(oracleAddress).createLlmCall(chatCount);
-        chatCount = chatCount + 1;
+	function getMessageHistoryContents(uint proposalId) public view returns (string[] memory) {
+		string[] memory messages = new string[](1);
+		messages[0] = concatenateStrings(setupPrompt, proposals[proposalId]);
+		return messages;
+	}
 
-        return chatCount - 1;
-    }
+	function getMessageHistoryRoles(uint proposalId) public pure returns (string[] memory) {
+		string[] memory roles = new string[](1);
+		roles[0] = "system";
+		return roles;
+	}
 
-    function onOracleLlmResponse(
-        uint runId,
-        string memory response,
-        string memory /*errorMessage*/
-    ) public onlyOracle {
-        chatResponses[runId] = response;
-    }
+	function concatenateStrings(string memory _a, string memory _b) private pure returns (string memory) {
+		string memory space = " ";
+		return string(abi.encodePacked(_a, space, _b));
+	}
 }
+
+
+	// function getProposalAdvise(string memory message) public returns (uint i) {
+	// 	IOracle(oracleAddress).createLlmCall(chatCount);
+	// 	chatCount = chatCount + 1;
+
+	// 	return chatCount - 1;
+	// }
+
+	// function onOracleLlmResponse(
+	// 	uint runId,
+	// 	string memory response,
+	// 	string memory /*errorMessage*/
+	// ) public onlyOracle {
+	// 	chatResponses[runId] = response;
+	// }
+
+	// function getMessageHistoryContents(uint chatId) public view returns (string[] memory) {
+	// 	string[] memory messages = new string[](chatRuns[chatId].messages.length);
+	// 	for (uint i = 0; i < chatRuns[chatId].messages.length; i++) {
+	// 		messages[i] = chatRuns[chatId].messages[i].content;
+	// 	}
+	// 	return messages;
+	// }
+
+	// function getMessageHistoryRoles(uint chatId) public view returns (string[] memory) {
+	// 	string[] memory roles = new string[](chatRuns[chatId].messages.length);
+	// 	for (uint i = 0; i < chatRuns[chatId].messages.length; i++) {
+	// 		roles[i] = chatRuns[chatId].messages[i].role;
+	// 	}
+	// 	return roles;
+	// }

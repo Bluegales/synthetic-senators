@@ -5,8 +5,8 @@ const {ethers} = require("hardhat");
 
 async function main() {
   const contractABI = [
-    "function getProposalAdvise(string memory message) public returns (uint)",
-    "function chatResponses(uint) public view returns (string)"
+    "function getProposalAdvise(string memory proposal, uint proposalId) public returns (uint)",
+    "function advises(uint) public view returns (string)"
   ];
 
   if (!process.env.ADVISOR_CONTRACT_ADDRESS) {
@@ -23,24 +23,24 @@ async function main() {
   const message = await getUserInput();
 
   // Call the startChat function
-  const transactionResponse = await contract.getProposalAdvise(message);
+  const transactionResponse = await contract.getProposalAdvise(message, 0);
   const receipt = await transactionResponse.wait();
   console.log(`Transaction sent, hash: ${receipt.hash}.\nExplorer: https://explorer.galadriel.com/tx/${receipt.hash}`)
   console.log(`Proposal advise on message: "${message}"`);
 
   // loop and sleep by 1000ms, and keep printing `lastResponse` in the contract.
-  let lastResponse = await contract.chatResponses(0);
+  let lastResponse = await contract.advises(0);
   let newResponse = lastResponse;
 
   // print w/o newline
   console.log("Waiting for response: ");
-  while (newResponse === lastResponse) {
+  while (1) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    newResponse = await contract.chatResponses(0);
-    console.log(".");
+    newResponse = await contract.advises(0);
+    console.log(newResponse);
   }
 
-  console.log(`Advise given: ${newResponse}`)
+  // console.log(`Advise given: ${newResponse}`)
 
 }
 
