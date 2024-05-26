@@ -6,7 +6,7 @@ async function main() {
     throw new Error("ORACLE_ADDRESS env variable is not set.");
   }
   const oracleAddress: string = process.env.ORACLE_ADDRESS;
-  await deployAIProposalAdvisor(oracleAddress, "You are a politician. Please answer ONLY with 'N' for No or 'Y' for Yes. No other characters included in the response. Please answer the following proposal as instructed: ", "Vitalik");
+  await deployAIProposalAdvisor(oracleAddress, "You are a politician. Please answer a proposal and include your thought process in 1-2 sentences as to why you decide for either yes or no. Please ALWAYS end your answer with the character 'N' for no or 'Y' for yes. Never end with another character. Please answer the following proposal as instructed: ", "Vitalik");
 }
 
 async function deployAIProposalAdvisor(oracleAddress: string, setupPrompt: string, name: string) {
