@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+  }
+  
+  .wallet-signin, .wallet-info {
+    cursor: pointer;
+  }
+  
+  main {
+    padding: 2rem;
+  }
+  
+  .dao-cards {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .dao-card, .person-card {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    width: 200px;
+  }
+
+  .people-list {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  
+  .dao-card img, .person-card img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .ai-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .ai-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .ai-description {
+    flex-grow: 1;
+    padding-left: 1rem;
+  }
+  
+  .chatbot, .last-proposal {
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+  }
+  
