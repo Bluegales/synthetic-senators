@@ -13,11 +13,11 @@ async function main() {
 
     let contractClient = new LitContracts({
         signer: wallet,
-        network: 'cayenne',
+        network: 'manzano',
     });
     const litNodeClient = new LitJsSdk.LitNodeClientNodeJs({
         alertWhenUnauthorized: false,
-        litNetwork: 'cayenne',
+        litNetwork: 'manzano',
     });
     await Promise.all([
         litNodeClient.connect(),
@@ -44,7 +44,7 @@ async function main() {
             ['0x'], // only for web3auth atm
             [[1]], // sign anything
             true, // addPkpEthAddressAsPermittedAddress,
-            true, // sendPkpToItself,
+            false, // sendPkpToItself,
             {
                 value: mintCost,
             }

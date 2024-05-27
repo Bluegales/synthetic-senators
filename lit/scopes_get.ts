@@ -7,18 +7,18 @@ import { getAuthSig } from "./authSig"
 
 const privateKey = 'c86aa794580749f172a1a40ccae974abd383b7862fac993b733b7c5c160d1b7d';
 const provider = new ethers.providers.JsonRpcProvider('https://chain-rpc.litprotocol.com/http')
-const tokenId = ethers.BigNumber.from("0x2f1e1658057a387196caca9a61d38b41091855f3b832f141545f91ef2ca79797")
+const tokenId = ethers.BigNumber.from("0xbb83f7b463902f2e8cafc1eab596a4b174315d8591edbf4b59c97f03bb01ea2e")
 
 async function main() {
     const wallet = new ethers.Wallet(privateKey, provider);
 
     let contractClient = new LitContracts({
         signer: wallet,
-        network: 'cayenne',
+        network: 'manzano',
     });
     const litNodeClient = new LitJsSdk.LitNodeClientNodeJs({
         alertWhenUnauthorized: false,
-        litNetwork: 'cayenne',
+        litNetwork: 'manzano',
     });
     await Promise.all([
         litNodeClient.connect(),
