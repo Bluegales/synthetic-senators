@@ -6,8 +6,9 @@ pragma solidity ^0.8.9;
 import "./interfaces/IOracle.sol";
 
 // Oracle contract fetches messages from this contract (callback), therefore messages aren't explicitly passed to the oracle
-
 // @todo add restriction to prevent anyone from calling getProposalAdvise
+// @note making this an agent (looping) is necessary to win a prize!
+// @todo add option to submit multiple proposals at once
 contract AIProposalAdvisor {
 
 	address private owner;
@@ -71,8 +72,7 @@ contract AIProposalAdvisor {
 	}
 
 	function concatenateStrings(string memory _a, string memory _b) private pure returns (string memory) {
-		string memory space = " ";
-		return string(abi.encodePacked(_a, space, _b));
+		return string(abi.encodePacked(_a, _b));
 	}
 }
 
