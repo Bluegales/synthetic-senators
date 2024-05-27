@@ -1,0 +1,23 @@
+[
+    {
+      "type": "dao",
+      "id": 1,
+      "name": "UniSwap"
+    },
+    {
+      "type": "dao",
+      "id": 2,
+      "name": "ENS"
+    },
+    {
+      "type": "dao",
+      "id": 3,
+      "name": "NOUNS"
+    },
+    {
+      "type": "dao",
+      "id": 4,
+      "name": "Fluence DAO"
+    }
+  ]
+  
