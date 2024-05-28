@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DAOSelection from '../components/DAOSelection';
 import DAODetails from '../components/DAODetails';
 import AIInteraction from '../components/AIInteraction';
+import { DAO } from '../types';
 
 const Home: React.FC = () => {
   const [selectedDAO, setSelectedDAO] = useState<DAO | null>(null);

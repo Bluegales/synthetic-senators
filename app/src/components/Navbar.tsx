@@ -9,14 +9,14 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="navbar">
-      <div className="logo">Logo Placeholder</div>
+    <nav className="navbar flex justify-between p-4 bg-gray-800 text-white">
+      <div className="logo text-xl">Logo Placeholder</div>
       {isWalletConnected ? (
-        <div className="wallet-info">
+        <div className="wallet-info flex items-center space-x-2">
           <span>daotik.eth</span> <span>🟢</span>
         </div>
       ) : (
-        <div className="wallet-signin" onClick={handleWalletSignin}>Wallet Connect</div>
+        <div className="wallet-signin cursor-pointer" onClick={handleWalletSignin}>Wallet Connect</div>
       )}
     </nav>
   );
