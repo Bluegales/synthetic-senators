@@ -33,7 +33,8 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar flex justify-between p-4 bg-gray-800 text-white">
       <div className="logo text-xl">Logo Placeholder</div>
-      <button onClick={() => open()} className="wallet-signin cursor-pointer">Wallet Connect</button>
+      {/* Use the Web3Modal button component */}
+      <w3m-button />
     </nav>
   );
 };
