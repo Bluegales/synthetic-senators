@@ -24,28 +24,18 @@
 
 // export default Navbar;
 
-
 import React from 'react';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
-interface NavbarProps {
-  onWalletConnect: () => void;
-  isWalletConnected: boolean;
-}
+const Navbar: React.FC = () => {
+  const { open } = useWeb3Modal();
 
-const Navbar: React.FC<NavbarProps> = ({ onWalletConnect, isWalletConnected }) => {
   return (
     <nav className="navbar flex justify-between p-4 bg-gray-800 text-white">
       <div className="logo text-xl">Logo Placeholder</div>
-      {isWalletConnected ? (
-        <div className="wallet-info flex items-center space-x-2">
-          <span>daotik.eth</span> <span>🟢</span>
-        </div>
-      ) : (
-        <div className="wallet-signin cursor-pointer" onClick={onWalletConnect}>Wallet Connect</div>
-      )}
+      <button onClick={() => open()} className="wallet-signin cursor-pointer">Wallet Connect</button>
     </nav>
   );
 };
 
 export default Navbar;
-

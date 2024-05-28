@@ -31,14 +31,15 @@
 
 // export default Home;
 
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAccount } from 'wagmi';
 import DAOSelection from '../components/DAOSelection';
 import DAODetails from '../components/DAODetails';
 import AIInteraction from '../components/AIInteraction';
 import { DAO } from '../types';
 
-const Home: React.FC<{ isWalletConnected: boolean }> = ({ isWalletConnected }) => {
+const Home: React.FC = () => {
+  const { address, isConnected } = useAccount();
   const [selectedDAO, setSelectedDAO] = useState<DAO | null>(null);
   const [isPersonSelected, setIsPersonSelected] = useState(false);
 
@@ -50,9 +51,13 @@ const Home: React.FC<{ isWalletConnected: boolean }> = ({ isWalletConnected }) =
     setIsPersonSelected(true);
   };
 
+  useEffect(() => {
+    // Handle state changes based on wallet connection
+  }, [isConnected]);
+
   return (
     <main>
-      {!isWalletConnected ? (
+      {!isConnected ? (
         <section id="home">
           <h1>Welcome to DAOtik AIwar.</h1>
           <p>DAO Voting made easy. Tired of having to vote for proposals? Make AI agents do the work for you</p>

@@ -14,23 +14,19 @@
 
 // export default App;
 
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
+import Web3ModalProvider from './components/Web3ModalProvider';
 
 const App: React.FC = () => {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-
-  const handleWalletConnect = () => {
-    alert('Wallet signed in!'); // Add this line to confirm wallet connection
-    setIsWalletConnected(true);
-  };
-
   return (
-    <div className="App">
-      <Navbar onWalletConnect={handleWalletConnect} isWalletConnected={isWalletConnected} />
-      <Home isWalletConnected={isWalletConnected} />
-    </div>
+    <Web3ModalProvider>
+      <div className="App">
+        <Navbar />
+        <Home />
+      </div>
+    </Web3ModalProvider>
   );
 };
 
