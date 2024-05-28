@@ -1,41 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-
-// interface Person {
-//   id: number;
-//   name: string;
-//   description: string;
-// }
-
-// const DAODetails: React.FC<{ daoName: string, onPersonSelect: () => void }> = ({ daoName, onPersonSelect }) => {
-//   const [persons, setPersons] = useState<Person[]>([]);
-
-//   useEffect(() => {
-//     const fetchPersons = async () => {
-//       const response = await fetch('/persons.json');
-//       const persons = await response.json();
-//       setPersons(persons);
-//     };
-//     fetchPersons();
-//   }, []);
-
-//   return (
-//     <section>
-//       <h1>{daoName}</h1>
-//       <div className="people-list">
-//         {persons.map((person) => (
-//           <div key={person.id} className="person-card" onClick={onPersonSelect}>
-//             <img src={`https://picsum.photos/100/100?random=${person.id + 3}`} alt={person.name} />
-//             <p>{person.name}</p>
-//             <p>{person.description}</p>
-//           </div>
-//         ))}
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default DAODetails;
-
 import React, { useEffect, useState } from 'react';
 import { Person } from '../types';
 
@@ -59,24 +21,23 @@ const DAODetails: React.FC<{ daoName: string, onPersonSelect: () => void }> = ({
   }, []);
 
   return (
-    <section>
-      <h1>{daoName}</h1>
-      <div className="people-list flex gap-4 items-center">
-        {persons.length > 0 ? (
-          persons.map((person) => (
-            <div key={person.id} className="person-card p-4 border border-gray-300 cursor-pointer w-52" onClick={onPersonSelect}>
-              <img src={`https://picsum.photos/100/100?random=${person.id + 3}`} alt={person.name} />
-              <p>{person.name}</p>
-              <p>{person.description}</p>
-            </div>
-          ))
-        ) : (
-          <p>No persons available</p>
-        )}
+    <section className="p-8">
+      <h1 className="text-2xl font-bold mb-6">{daoName}</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {persons.map((person) => (
+          <div
+            key={person.id}
+            className="person-card p-4 bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow"
+            onClick={onPersonSelect}
+          >
+            <img src={`https://picsum.photos/100/100?random=${person.id + 3}`} alt={person.name} className="rounded mb-4" />
+            <p className="text-lg font-semibold">{person.name}</p>
+            <p className="text-sm">{person.description}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
 };
 
 export default DAODetails;
-
