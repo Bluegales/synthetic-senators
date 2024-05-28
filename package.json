@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@web3modal/ethers5": "^4.2.2",
-    "@web3modal/react": "^2.7.1",
-    "ethers": "^5.7.2",
-    "wagmi": "^2.9.7"
-  }
-}
