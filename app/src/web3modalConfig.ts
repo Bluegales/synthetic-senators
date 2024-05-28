@@ -4,7 +4,7 @@
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config';
 import { QueryClient } from '@tanstack/react-query';
-import { mainnet, arbitrum } from 'wagmi/chains';
+import { mainnet, arbitrum, optimism, baseSepolia, sepolia} from 'wagmi/chains';
 
 
 export const queryClient = new QueryClient();
@@ -19,7 +19,7 @@ const metadata = {
   icons: ['https://daotikaiwar.eth/icon.png'],
 };
 
-const chains = [mainnet, arbitrum];
+const chains = [mainnet, arbitrum, optimism, baseSepolia, sepolia];
 export const wagmiConfig = defaultWagmiConfig({
   chains: chains as any, 
   projectId,

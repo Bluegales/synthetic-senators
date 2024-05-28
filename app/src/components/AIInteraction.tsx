@@ -21,7 +21,7 @@ const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     setIsModalOpen(false);
 
     // Delegation issue simulation. Set to false for failed, true for success
-    const delegationSuccessful = false; 
+    const delegationSuccessful = true; 
 
     if (delegationSuccessful) {
       setIsSuccessModalOpen(true);
