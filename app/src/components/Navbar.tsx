@@ -25,16 +25,13 @@
 // export default Navbar;
 
 import React from 'react';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 const Navbar: React.FC = () => {
-  const { open } = useWeb3Modal();
-
   return (
-    <nav className="navbar flex justify-between p-4 bg-gray-800 text-white">
-      <div className="logo text-xl">Logo Placeholder</div>
-      {/* Use the Web3Modal button component */}
-      <w3m-button />
+    <nav className="navbar flex justify-between items-center p-4 bg-gray-800 text-white shadow-md">
+      <div className="logo text-xl font-bold">DAOtik AIwar</div>
+            {/* Use the Web3Modal button component */}
+            <w3m-button />
     </nav>
   );
 };
