@@ -1,62 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { useAccount } from 'wagmi';
-// import DAOSelection from '../components/DAOSelection';
-// import DAODetails from '../components/DAODetails';
-// import AIInteraction from '../components/AIInteraction';
-// import { DAO } from '../types';
-
-// const Home: React.FC = () => {
-//   const { address, isConnected } = useAccount();
-//   const [selectedDAO, setSelectedDAO] = useState<DAO | null>(null);
-//   const [isPersonSelected, setIsPersonSelected] = useState(false);
-
-//   const handleDAOSelect = (dao: DAO) => {
-//     setSelectedDAO(dao);
-//   };
-
-//   const handlePersonSelect = () => {
-//     setIsPersonSelected(true);
-//   };
-
-//   const handleBackToDAOSelection = () => {
-//     setSelectedDAO(null);
-//     setIsPersonSelected(false);
-//   };
-
-//   const handleBackToDAODetails = () => {
-//     setIsPersonSelected(false);
-//   };
-
-//   useEffect(() => {
-//     // Handle state changes based on wallet connection
-//   }, [isConnected]);
-
-//   return (
-//     <main className="p-8 bg-gray-100 min-h-screen">
-//       {!isConnected ? (
-//         <section id="home" className="text-center max-w-4xl mx-auto">
-//           <h1 className="text-4xl font-bold mb-6">Welcome to DAOtik AIwar</h1>
-//           <p className="text-lg mb-4">DAO Voting made easy. Tired of having to vote for proposals? Make AI agents do the work for you.</p>
-//           <p className="text-lg mb-4">Our platform provides seamless integration with your favorite DAOs, allowing AI to handle routine voting tasks.</p>
-//           <p className="text-lg mb-4">Join now and experience the future of decentralized governance with AI-powered solutions.</p>
-//           <img src="https://via.placeholder.com/600x400" alt="Placeholder" className="mx-auto my-8 rounded shadow-md" />
-//           <img src="https://via.placeholder.com/600x400" alt="Placeholder" className="mx-auto my-8 rounded shadow-md" />
-//         </section>
-//       ) : (
-//         <>
-//           {!selectedDAO && <DAOSelection onSelectDAO={handleDAOSelect} />}
-//           {selectedDAO && !isPersonSelected && (
-//             <DAODetails daoName={selectedDAO.name} onPersonSelect={handlePersonSelect} onBack={handleBackToDAOSelection} />
-//           )}
-//           {isPersonSelected && <AIInteraction onBack={handleBackToDAODetails} />}
-//         </>
-//       )}
-//     </main>
-//   );
-// };
-
-// export default Home;
-
 import React, { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import DAOSelection from '../components/DAOSelection';
@@ -91,49 +32,99 @@ const Home: React.FC = () => {
   }, [isConnected]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-    <main className="flex-grow p-8 bg-gray-100">
-      {!isConnected ? (
-        <section id="home" className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-6">Welcome to DAOtik AIwar</h1>
-          <p className="text-lg mb-4">DAO Voting made easy. Tired of having to vote for proposals? <br></br> Make AI agents do the work for you</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-4">No More Absent Votes</h2>
-              <p className="text-lg mb-4">Have the AI Vote for you, based on your</p>
-              <img src="https://picsum.photos/400/300?random=1" alt="Placeholder" className="rounded-lg shadow-md mb-4" />
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-4">No More Absent Votes</h2>
-              <p className="text-lg mb-4">Have the AI Vote for you, based on your</p>
-              <img src="https://picsum.photos/400/300?random=2" alt="Placeholder" className="rounded-lg shadow-md mb-4" />
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-4">No More Absent Votes</h2>
-              <p className="text-lg mb-4">Have the AI Vote for you, based on your</p>
-              <img src="https://picsum.photos/400/300?random=3" alt="Placeholder" className="rounded-lg shadow-md mb-4" />
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-4">No More Absent Votes</h2>
-              <p className="text-lg mb-4">Have the AI Vote for you, based on your</p>
-              <img src="https://picsum.photos/400/300?random=4" alt="Placeholder" className="rounded-lg shadow-md mb-4" />
-            </div>
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <main className="flex-grow p-8">
+        {!isConnected ? (
+          <div className="max-w-6xl mx-auto">
+            <section className="text-center mb-16">
+              <h1 className="text-5xl font-bold mb-4">Welcome to DAOtik AIwar!</h1>
+              <p className="text-xl font-semibold mb-4">Simplify Your DAO Voting</p>
+              <p className="text-lg mb-4">Are you tired of constantly having to vote on proposals? Let our advanced AI agents handle it for you. At DAOtik AIwar, we make DAO voting effortless and efficient.</p>
+            </section>
+            
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
+              <div>
+                <h2 className="text-2xl font-bold mb-4">Why Choose DAOtik AIwar?</h2>
+                <ul className="list-disc list-inside">
+                  <li className="text-lg mb-2">Automated Voting: Our AI agents analyze proposals and cast votes on your behalf, saving you time and effort.</li>
+                  <li className="text-lg mb-2">Intelligent Decision-Making: Leveraging cutting-edge AI, our agents make informed decisions based on your preferences and guidelines.</li>
+                  <li className="text-lg mb-2">Seamless Integration: Easily integrate with your existing DAO platforms and enjoy a hassle-free voting experience.</li>
+                  <li className="text-lg mb-2">Customizable Preferences: Set your voting preferences and let our AI agents take care of the rest.</li>
+                </ul>
+              </div>
+              <div className="flex justify-center">
+                <img src="https://picsum.photos/400/300" alt="Placeholder" className="rounded-lg shadow-md" />
+              </div>
+            </section>
+
+            <section className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-8">How it works</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="flex flex-col items-center">
+                  <img src="https://picsum.photos/100/100" alt="Step 1" className="mb-4" />
+                  <h3 className="text-xl font-bold mb-2">Step 1</h3>
+                  <p className="text-lg">This is a quick description of the step.</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <img src="https://picsum.photos/100/100" alt="Step 2" className="mb-4" />
+                  <h3 className="text-xl font-bold mb-2">Step 2</h3>
+                  <p className="text-lg">This is a quick description of the step.</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <img src="https://picsum.photos/100/100" alt="Step 3" className="mb-4" />
+                  <h3 className="text-xl font-bold mb-2">Step 3</h3>
+                  <p className="text-lg">This is a quick description of the step.</p>
+                </div>
+              </div>
+              <button className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">Learn more</button>
+            </section>
+
+            <section className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-8">Works with the DAOs you love</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div className="flex flex-col items-center">
+                  <img src="https://picsum.photos/100/100" alt="Logo 1" className="w-20 h-20 mb-4" />
+                  <p className="text-lg font-semibold">Nouns</p>
+                  <p className="text-sm text-gray-600">Lorem Ipsum and some stuff.</p>
+                  <a href="#" className="text-blue-600 hover:underline">See it in action</a>
+                </div>
+                <div className="flex flex-col items-center">
+                  <img src="https://picsum.photos/100/100" alt="Logo 2" className="w-20 h-20 mb-4" />
+                  <p className="text-lg font-semibold">ENS</p>
+                  <p className="text-sm text-gray-600">Lorem Ipsum and some stuff.</p>
+                  <a href="#" className="text-blue-600 hover:underline">See it in action</a>
+                </div>
+                <div className="flex flex-col items-center">
+                  <img src="https://picsum.photos/100/100" alt="Logo 3" className="w-20 h-20 mb-4" />
+                  <p className="text-lg font-semibold">Fluence</p>
+                  <p className="text-sm text-gray-600">Lorem Ipsum and some stuff.</p>
+                  <a href="#" className="text-blue-600 hover:underline">See it in action</a>
+                </div>
+                <div className="flex flex-col items-center">
+                  <img src="https://picsum.photos/100/100" alt="Logo 4" className="w-20 h-20 mb-4" />
+                  <p className="text-lg font-semibold">PretzlDAO</p>
+                  <p className="text-sm text-gray-600">Lorem Ipsum and some stuff.</p>
+                  <a href="#" className="text-blue-600 hover:underline">See it in action</a>
+                </div>
+              </div>
+            </section>
+            {/* <section className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-8">Made for HackFS2024</h2>
+            </section> */}
           </div>
-        </section>
-      ) : (
-        <>
-          {!selectedDAO && <DAOSelection onSelectDAO={handleDAOSelect} />}
-          {selectedDAO && !isPersonSelected && (
-            <DAODetails daoName={selectedDAO.name} onPersonSelect={handlePersonSelect} onBack={handleBackToDAOSelection} />
-          )}
-          {isPersonSelected && <AIInteraction onBack={handleBackToDAODetails} />}
-        </>
-      )}
+        ) : (
+          <>
+            {!selectedDAO && <DAOSelection onSelectDAO={handleDAOSelect} />}
+            {selectedDAO && !isPersonSelected && (
+              <DAODetails daoName={selectedDAO.name} onPersonSelect={handlePersonSelect} onBack={handleBackToDAOSelection} />
+            )}
+            {isPersonSelected && <AIInteraction onBack={handleBackToDAODetails} />}
+          </>
+        )}
       </main>
-      {/* <footer className="bg-gray-800 text-white text-center p-4 fixed bottom-0 w-full">
-        Made with 🍻
-      </footer> */}
+      <footer className="bg-gray-800 text-white text-center p-4">
+        Made with 🍻 for HackFS 2024
+      </footer>
     </div>
   );
 };
