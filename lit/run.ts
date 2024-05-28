@@ -32,13 +32,26 @@ async function main() {
   const authSig = await getAuthSig(litNodeClient);
 
   const litActionCode = `
-      const go = async () => {
-      // The params toSign, publicKey, sigName are passed from the jsParams fields and are available here
-      // console.log(toSign, publicKey, sigName);
-      const sigShare = await Lit.Actions.signEcdsa({ toSign, publicKey, sigName });
-      };
-  
-      go();
+    const go = async () => {  
+      const url = "https://api.weather.gov/gridpoints/TOP/31,80/forecast";
+      const resp = await fetch(url).then((response) => response.json());
+      const temp = resp.properties.periods[0].temperature;
+    
+      // only sign if the temperature is above 60.  if it's below 60, exit.
+      if (temp < 60) {
+        LitActions.setResponse({ response: "temperature below 60" });
+        return;
+      }
+      
+      LitActions.setResponse({ response: "temperature above 60" });
+
+      // this requests a signature share from the Lit Node
+      // the signature share will be automatically returned in the HTTP response from the node
+      // all the params (toSign, publicKey, sigName) are passed in from the LitJsSdk.executeJs() function
+      const sigShare = await LitActions.signEcdsa({ toSign, publicKey , sigName });
+    };
+    
+    go();
   `;
   // const pkpKey = ethers.BigNumber.from("0x04b9f18903a7ca5ad7e419f7553ef338f4cc3e2e86f31257cd54ad9ba03b02831421d51f873beb5dd92c68204ba0a7af9e65670e0023d3a075f8d67b025c7e65ae")
 
