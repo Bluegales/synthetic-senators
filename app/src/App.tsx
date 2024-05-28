@@ -1,20 +1,5 @@
-// import './App.css';
-// import React from 'react';
-// import Navbar from './components/Navbar';
-// import Home from './pages/Home';
-
-// const App: React.FC = () => {
-//   return (
-//     <div className="App">
-//       <Navbar />
-//       <Home />
-//     </div>
-//   );
-// };
-
-// export default App;
-
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Web3ModalProvider from './components/Web3ModalProvider';
@@ -22,10 +7,14 @@ import Web3ModalProvider from './components/Web3ModalProvider';
 const App: React.FC = () => {
   return (
     <Web3ModalProvider>
-      <div className="App">
-        <Navbar />
-        <Home />
-      </div>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
+      </Router>
     </Web3ModalProvider>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Person } from '../types';
 
-const DAODetails: React.FC<{ daoName: string, onPersonSelect: () => void }> = ({ daoName, onPersonSelect }) => {
-  const [persons, setPersons] = useState<Person[]>([]);
+const DAODetails: React.FC<{ daoName: string, onPersonSelect: () => void, onBack: () => void }> = ({ daoName, onPersonSelect, onBack }) => {
+    const [persons, setPersons] = useState<Person[]>([]);
 
   useEffect(() => {
     const fetchPersons = async () => {
@@ -36,6 +36,8 @@ const DAODetails: React.FC<{ daoName: string, onPersonSelect: () => void }> = ({
           </div>
         ))}
       </div>
+      <br></br>
+      <button className="mb-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={onBack}>Back</button>
     </section>
   );
 };

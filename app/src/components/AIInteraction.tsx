@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AIInteraction: React.FC = () => {
+const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const handleDelegate = () => {
     alert('Delegation initiated!');
   };
@@ -25,6 +25,8 @@ const AIInteraction: React.FC = () => {
       <div className="last-proposal p-4 bg-white rounded-lg shadow-md">
         <p>Last Proposal Content</p>
       </div>
+        <br></br>
+        <button className="mb-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={onBack}>Back</button>
     </section>
   );
 };
