@@ -1,6 +1,9 @@
-import { ethers } from "ethers"
-const providerUrl = 'https://devnet.galadriel.com'
-const contractAddress = "0x91e2770cF1E511420AdfbdF668794910101Ecf90"
+// uncomment this if you want to run this file seperatly as
+// `node ./actionCallGaladriel.js`
+
+// import { ethers } from "ethers"
+// const providerUrl = 'https://devnet.galadriel.com'
+// const contractAddress = "0x91e2770cF1E511420AdfbdF668794910101Ecf90"
 
 const go = async () => {
   const ABI = [

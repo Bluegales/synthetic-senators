@@ -36,21 +36,26 @@ async function main() {
   const litActionProposalData: string = await fs.readFile("./actionGetProposalData.js", 'utf8');
   const litActionGaladrielResponseData: string = await fs.readFile("./actionCallGaladriel.js", 'utf8');
     
-  // const pkpKey = ethers.BigNumber.from("0x04b9f18903a7ca5ad7e419f7553ef338f4cc3e2e86f31257cd54ad9ba03b02831421d51f873beb5dd92c68204ba0a7af9e65670e0023d3a075f8d67b025c7e65ae")
-
-  // const pkpKey2 = ethers.BigNumber.from(pkpKey)
-
   const signatures = await litNodeClient.executeJs({
     code: litActionProposalData,
     authSig: authSig,
     jsParams: {
-      // toSign: [84, 104, 105, 115, 32, 109, 101, 115, 115, 97, 103, 101, 32, 105, 115, 32, 101, 120, 97, 99, 116, 108, 121, 32, 51, 50, 32, 98, 121, 116, 101, 115],
-      // publicKey: pkpKey,
-      // sigName: "sig1",
+      apiKey: 'd0c4916e4e60c95b3c77a22eb83e158638109a937c76210eafca951a3e950f5d'
     },
   });
 
   console.log(signatures);
+
+  const signatures2 = await litNodeClient.executeJs({
+    code: litActionProposalData,
+    authSig: authSig,
+    jsParams: {
+      providerUrl: 'd0c4916e4e60c95b3c77a22eb83e158638109a937c76210eafca951a3e950f5d',
+      contractAddress: '0x91e2770cF1E511420AdfbdF668794910101Ecf90'
+    },
+  });
+
+  console.log(signatures2);
 
   await litNodeClient.disconnect();
 }
