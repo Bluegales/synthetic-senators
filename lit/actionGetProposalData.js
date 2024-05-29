@@ -25,7 +25,6 @@ const go = async () => {
         sort: { field: "START_BLOCK", order: "DESC" },
     };
     const url = 'https://api.tally.xyz/query';
-    const apiKey = 'd0c4916e4e60c95b3c77a22eb83e158638109a937c76210eafca951a3e950f5d';
 
     const response = await fetch(url, {
         method: 'POST',
@@ -39,6 +38,7 @@ const go = async () => {
         }),
     });
 
+    // This is could be an option if the many requests to the api are a problem
     // const response = await Lit.Actions.runOnce({ waitForResponse: true, name: "txnSender" }, async () => {
     //     return await fetch(url, {
     //         method: 'POST',
