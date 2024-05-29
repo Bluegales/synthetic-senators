@@ -49,10 +49,10 @@ const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </button>
         </div>
       </div>
-      <div className="chatbot mb-6 p-4 bg-white rounded-lg shadow-md">
+      <div className="chatbot mb-6 p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-2/3">
         <p>Chatbot conversation here...</p>
       </div>
-      <div className="last-proposal p-4 bg-white rounded-lg shadow-md">
+      <div className="last-proposal p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-2/3">
         <p>Last Proposal Content</p>
       </div>
       <br />

@@ -32,7 +32,7 @@ const Home: React.FC = () => {
   }, [isConnected]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-900 text-slate-200">
       <main className="flex-grow p-8">
         {!isConnected ? (
           <div className="max-w-6xl mx-auto">
