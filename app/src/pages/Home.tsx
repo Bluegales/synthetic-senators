@@ -45,11 +45,11 @@ const Home: React.FC = () => {
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
               <div>
                 <h2 className="text-2xl font-bold mb-4 text-gradient">Why Choose DAOtik AIwar?</h2>
-                <ul className="list-disc list-inside">
-                  <li className="text-lg mb-2">Automated Voting: Our AI agents analyze proposals and cast votes on your behalf, saving you time and effort.</li>
-                  <li className="text-lg mb-2">Intelligent Decision-Making: Leveraging cutting-edge AI, our agents make informed decisions based on your preferences and guidelines.</li>
-                  <li className="text-lg mb-2">Seamless Integration: Easily integrate with your existing DAO platforms and enjoy a hassle-free voting experience.</li>
-                  <li className="text-lg mb-2">Customizable Preferences: Set your voting preferences and let our AI agents take care of the rest.</li>
+                <ul className="list-inside">
+                  <li className="text-lg mb-2"><b>Automated Voting:</b><br></br> Our AI agents analyze proposals and cast votes on your behalf, saving you time and effort.</li>
+                  <li className="text-lg mb-2"><b>Intelligent Decision-Making:</b><br></br> Leveraging cutting-edge AI, our agents make informed decisions based on your preferences and guidelines.</li>
+                  <li className="text-lg mb-2"><b>Seamless Integration:</b><br></br> Easily integrate with your existing DAO platforms and enjoy a hassle-free voting experience.</li>
+                  <li className="text-lg mb-2"><b>Customizable Preferences:</b><br></br> Set your voting preferences and let our AI agents take care of the rest.</li>
                 </ul>
               </div>
               <div className="flex justify-center">
