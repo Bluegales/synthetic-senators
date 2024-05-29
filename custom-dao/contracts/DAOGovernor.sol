@@ -5,19 +5,17 @@ import "@openzeppelin/contracts/governance/Governor.sol";
 import "@openzeppelin/contracts/governance/compatibility/GovernorCompatibilityBravo.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
-import "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol";
+import "@openzeppelin/contracts/governance/TimelockController.sol";
 
 contract DAOGovernor is
     Governor,
     GovernorCompatibilityBravo,
     GovernorVotes,
-    GovernorVotesQuorumFraction,
-    GovernorTimelockControl
+    GovernorVotesQuorumFraction
 {
     constructor(
-        IVotes _token,
-        TimelockController _timelock
-    ) Governor("DAOGovernor") GovernorVotes(_token) GovernorVotesQuorumFraction(4) GovernorTimelockControl(_timelock) {}
+        IVotes _token
+    ) Governor("DAOGovernor") GovernorVotes(_token) GovernorVotesQuorumFraction(4) {}
 
     function votingDelay() public pure override returns (uint256) {
         return 7200; // 1 day
@@ -31,11 +29,19 @@ contract DAOGovernor is
         return 0;
     }
 
+    function proposalEta(uint256 proposalId) public pure override returns (uint256) {
+        return proposalId;
+    }
+
+    function timelock() public pure override returns (address) {
+        return address(0);
+    }
+
     // The functions below are overrides required by Solidity.
 
     function state(
         uint256 proposalId
-    ) public view override(Governor, IGovernor, GovernorTimelockControl) returns (ProposalState) {
+    ) public view override(Governor, IGovernor) returns (ProposalState) {
         return super.state(proposalId);
     }
 
@@ -44,7 +50,7 @@ contract DAOGovernor is
         uint256[] memory values,
         bytes[] memory calldatas,
         string memory description
-    ) public override(Governor, GovernorCompatibilityBravo, IGovernor) returns (uint256) {
+    ) public override(Governor, GovernorCompatibilityBravo) returns (uint256) {
         return super.propose(targets, values, calldatas, description);
     }
 
@@ -53,7 +59,7 @@ contract DAOGovernor is
         uint256[] memory values,
         bytes[] memory calldatas,
         bytes32 descriptionHash
-    ) public override(Governor, GovernorCompatibilityBravo, IGovernor) returns (uint256) {
+    ) public override(Governor, GovernorCompatibilityBravo) returns (uint256) {
         return super.cancel(targets, values, calldatas, descriptionHash);
     }
 
@@ -63,7 +69,7 @@ contract DAOGovernor is
         uint256[] memory values,
         bytes[] memory calldatas,
         bytes32 descriptionHash
-    ) internal override(Governor, GovernorTimelockControl) {
+    ) internal override(Governor) {
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
     }
 
@@ -72,17 +78,30 @@ contract DAOGovernor is
         uint256[] memory values,
         bytes[] memory calldatas,
         bytes32 descriptionHash
-    ) internal override(Governor, GovernorTimelockControl) returns (uint256) {
+    ) internal override(Governor) returns (uint256) {
         return super._cancel(targets, values, calldatas, descriptionHash);
     }
 
-    function _executor() internal view override(Governor, GovernorTimelockControl) returns (address) {
+    function _executor() internal view override(Governor) returns (address) {
         return super._executor();
     }
 
     function supportsInterface(
         bytes4 interfaceId
-    ) public view override(Governor, IERC165, GovernorTimelockControl) returns (bool) {
+    ) public view override(Governor, IERC165) returns (bool) {
         return super.supportsInterface(interfaceId);
+    }
+
+    function queue(
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        bytes32 descriptionHash
+    ) public pure override returns (uint256 proposalId) {
+        targets = targets;
+        values = values;
+        calldatas = calldatas;
+        descriptionHash = descriptionHash;
+        return 0;
     }
 }
