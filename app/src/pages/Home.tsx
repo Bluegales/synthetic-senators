@@ -33,18 +33,18 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-slate-200">
-      <main className="flex-grow p-8">
+      <main className="flex-grow pt-32">
         {!isConnected ? (
           <div className="max-w-6xl mx-auto">
             <section className="text-center mb-16">
-              <h1 className="text-5xl font-bold mb-4">Welcome to DAOtik AIwar!</h1>
+              <h1 className="text-5xl font-bold mb-4 ">Welcome to DAOtik AIwar!</h1>
               <p className="text-xl font-semibold mb-4">Simplify Your DAO Voting</p>
               <p className="text-lg mb-4">Are you tired of constantly having to vote on proposals? Let our advanced AI agents handle it for you. At DAOtik AIwar, we make DAO voting effortless and efficient.</p>
             </section>
             
             <section className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Why Choose DAOtik AIwar?</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gradient">Why Choose DAOtik AIwar?</h2>
                 <ul className="list-disc list-inside">
                   <li className="text-lg mb-2">Automated Voting: Our AI agents analyze proposals and cast votes on your behalf, saving you time and effort.</li>
                   <li className="text-lg mb-2">Intelligent Decision-Making: Leveraging cutting-edge AI, our agents make informed decisions based on your preferences and guidelines.</li>
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
             </section>
 
             <section className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-8">How it works</h2>
+              <h2 className="text-3xl font-bold mb-8 text-gradient">How it works</h2>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div className="flex flex-col items-center">
                   <img src="https://picsum.photos/100/100" alt="Step 1" className="mb-4" />
@@ -85,7 +85,7 @@ const Home: React.FC = () => {
             </section>
 
             <section className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-8">Works with the DAOs you love</h2>
+              <h2 className="text-3xl font-bold mb-8 text-gradient">Works with the DAOs you love</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="flex flex-col items-center">
                   <img src="https://picsum.photos/100/100" alt="Logo 1" className="w-20 h-20 mb-4" />

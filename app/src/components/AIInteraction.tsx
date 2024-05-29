@@ -36,7 +36,7 @@ const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   };
 
   return (
-    <section className="p-8">
+    <section className="p-8 w-5/6 max-w-screen-lg mx-auto mt-24">
       <div className="ai-header flex justify-between items-center mb-6">
         <img src="https://picsum.photos/100/100?random=6" alt="AI Image" className="rounded-full shadow-md" />
         <div className="ai-description flex-grow pl-4">
@@ -49,10 +49,10 @@ const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </button>
         </div>
       </div>
-      <div className="chatbot mb-6 p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-2/3">
+      <div className="chatbot mb-6 p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
         <p>Chatbot conversation here...</p>
       </div>
-      <div className="last-proposal p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-2/3">
+      <div className="last-proposal p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
         <p>Last Proposal Content</p>
       </div>
       <br />
@@ -82,4 +82,3 @@ const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 };
 
 export default AIInteraction;
-

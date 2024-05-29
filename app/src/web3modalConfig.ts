@@ -26,6 +26,7 @@ export const wagmiConfig = defaultWagmiConfig({
 });
 
 createWeb3Modal({
+  // themeMode: 'dark',
   wagmiConfig,
   projectId,
   enableAnalytics: true, 
