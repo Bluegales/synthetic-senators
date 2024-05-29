@@ -25,18 +25,18 @@ async function main() {
     await new Promise( resolve => setTimeout(resolve, 2000) );
     console.log("now doing shit")
     
-    // const { capacityTokenIdStr } = await contractClient.mintCapacityCreditsNFT({
-    //     requestsPerKilosecond: 80,
-    //     // requestsPerDay: 14400,
-    //     // requestsPerSecond: 10,
-    //     daysUntilUTCMidnightExpiration: 2,
-    // });
-    // console.log(capacityTokenIdStr)
+    const { capacityTokenIdStr } = await contractClient.mintCapacityCreditsNFT({
+        requestsPerKilosecond: 80,
+        // requestsPerDay: 14400,
+        // requestsPerSecond: 10,
+        daysUntilUTCMidnightExpiration: 2,
+    });
+    console.log(capacityTokenIdStr)
 
     // const { capacityDelegationAuthSig } =
     // await litNodeClient.createCapacityDelegationAuthSig({
     //     dAppOwnerWallet: wallet,
-    //     capacityTokenId: "1164",
+    //     capacityTokenId: "1166",
     //     delegateeAddresses: ["0x09F051e7F87C9fC6eDD6E8460eb1dd52C8fd4663"],
     //     uses: '1',
     // });
