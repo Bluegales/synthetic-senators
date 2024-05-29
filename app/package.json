@@ -23,6 +23,9 @@
     "wagmi": "^2.9.7",
     "web-vitals": "^2.1.4"
   },
+  "overrides": {
+    "typescript": "^5.4.5"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
