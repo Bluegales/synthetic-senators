@@ -11,7 +11,6 @@ export const queryClient = new QueryClient();
 
 export const projectId = '8a7f7aef4b5cfe2c2387efaea8d43f49';
 
-
 const metadata = {
   name: 'DAOtik AIwar',
   description: 'DAO Voting made easy with AI agents',
@@ -27,6 +26,7 @@ export const wagmiConfig = defaultWagmiConfig({
 });
 
 createWeb3Modal({
+  // themeMode: 'dark',
   wagmiConfig,
   projectId,
   enableAnalytics: true, 
