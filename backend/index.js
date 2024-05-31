@@ -49,7 +49,6 @@ const submitProposals = async () => {
 	const message = "Should Ethereum implement sharding to scale?"
 
 	const transactionResponse = await contract.submitProposals([message], [0]);
-	// const transactionResponse = await contract.test();
 	console.log(transactionResponse);
 	const advice = await contract.getProposalAdvice(0);
 	console.log(advice);
