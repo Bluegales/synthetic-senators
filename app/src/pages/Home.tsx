@@ -37,14 +37,14 @@ const Home: React.FC = () => {
         {!isConnected ? (
           <div className="w-full">
             <section className="text-center mb-16">
-              <h1 className="text-5xl font-bold mb-4">Welcome to DAOtik AIwar!</h1>
+              <h1 className="text-5xl font-bold mb-4">Welcome to MahatmAI GandhDAO!</h1>
               <p className="text-xl font-semibold mb-4">Simplify Your DAO Voting</p>
-              <p className="text-lg mb-4">Are you tired of constantly having to vote on proposals? Let our advanced AI agents handle it for you. At DAOtik AIwar, we make DAO voting effortless and efficient.</p>
+              <p className="text-lg mb-4">Are you tired of constantly having to vote on proposals? Let our advanced AI agents handle it for you. At MahatmAI GandhDAO, we make DAO voting effortless and efficient.</p>
             </section>
             
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
               <div>
-                <h2 className="text-2xl font-bold mb-4 text-gradient">Why Choose DAOtik AIwar?</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gradient">Why Choose MahatmAI GandhDAO?</h2>
                 <ul className="list-inside">
                   <li className="text-lg mb-2"><b>Automated Voting:</b><br></br> Our AI agents analyze proposals and cast votes on your behalf, saving you time and effort.</li>
                   <li className="text-lg mb-2"><b>Intelligent Decision-Making:</b><br></br> Leveraging cutting-edge AI, our agents make informed decisions based on your preferences and guidelines.</li>
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
                 </ul>
               </div>
               <div className="flex justify-center">
-                <img src="https://picsum.photos/400/300" alt="Placeholder" className="rounded-lg shadow-md" />
+                <img src="mahatmai.png" alt="Placeholder" width="400px" className="rounded-lg shadow-md" />
               </div>
             </section>
 
@@ -61,30 +61,30 @@ const Home: React.FC = () => {
               <h2 className="text-3xl font-bold mb-8 text-gradient">How it works</h2>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div className="flex flex-col items-center">
-                  <img src="https://picsum.photos/100/100" alt="Step 1" className="mb-4" />
+                  <img src="step1.png" alt="Step 1" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 1</h3>
                   <p className="text-lg">Connect your Wallet</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <img src="https://picsum.photos/100/100" alt="Step 2" className="mb-4" />
+                  <img src="step2.png" alt="Step 2" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 2</h3>
                   <p className="text-lg">Select DAO</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <img src="https://picsum.photos/100/100" alt="Step 3" className="mb-4" />
+                  <img src="step3.png" alt="Step 3" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 3</h3>
                   <p className="text-lg">Select AI Agent</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <img src="https://picsum.photos/100/100" alt="Step 4" className="mb-4" />
+                  <img src="step4.png" alt="Step 4" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 4</h3>
-                  <p className="text-lg">Delegate your voice to DAOtik AIwar</p>
+                  <p className="text-lg">Delegate your voice to MahatmAI GandhDAO</p>
                 </div>
               </div>
-              <button className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">Learn more</button>
+              {/* <button className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">Learn more</button> */}
             </section>
 
-            <section className="text-center mb-16">
+            {/* <section className="text-center mb-16">
               <h2 className="text-3xl font-bold mb-8 text-gradient">Works with the DAOs you love</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="flex flex-col items-center">
@@ -112,7 +112,7 @@ const Home: React.FC = () => {
                   <a href="#" className="text-blue-600 hover:underline">See it in action</a>
                 </div>
               </div>
-            </section>
+            </section> */}
           </div>
         ) : (
           <>
