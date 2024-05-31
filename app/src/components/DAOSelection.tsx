@@ -24,7 +24,7 @@ const DAOSelection: React.FC<{ onSelectDAO: (dao: DAO) => void }> = ({ onSelectD
   return (
     <section className="p-8 w-5/6 mx-auto mt-24">
       <h1 className="text-2xl font-bold mb-6">Select a DAO</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
         {daos.map((dao) => (
           <div
             key={dao.id}
