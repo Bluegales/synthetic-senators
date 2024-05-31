@@ -19,24 +19,45 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-const callGaladriel = async () => {
-	const abi = [
-		"function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
-		"function getProposalAdvice(uint proposalId) public view returns (string memory)",
-		"function test() public view returns (string memory)"
-	  ];
-	const providerUrl = 'https://devnet.galadriel.com';
-	const contractAddress = process.env.ADVISOR_CONTRACT_ADDRESS;
+// galadriel initialzation
+const abi = [
+	"function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
+	"function getProposalAdvice(uint proposalId) public view returns (string memory)",
+	"function test() public view returns (string memory)",
+	{
+		"name": "proposals",
+		"type": "function",
+		"inputs": [
+		  { "name": "proposalId", "type": "uint" }
+		],
+		"outputs": [
+		  { "name": "description", "type": "string" },
+		  { "name": "advice", "type": "string" },
+		  { "name": "iteration", "type": "uint" },
+		  { "name": "isResolved", "type": "bool" }
+		],
+		"stateMutability": "view"
+	  }
+];
+const contractAddress = process.env.ADVISOR_CONTRACT_ADDRESS;
+const provider = new ethers.JsonRpcProvider(process.env.GALADRIEL_RPC_URL);
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+const signer = wallet.connect(provider);
+const contract = new ethers.Contract(contractAddress, abi, signer);
 
-	const provider = new ethers.JsonRpcProvider(providerUrl);
-	const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-	const signer = wallet.connect(provider);
-	const contract = new ethers.Contract(contractAddress, abi, signer);
+const submitProposals = async () => {
 	const message = "Should Ethereum implement sharding to scale?"
 
-	// const transactionResponse = await contract.submitProposals([message], [0]);
-	const transactionResponse = await contract.test();
+	const transactionResponse = await contract.submitProposals([message], [0]);
+	// const transactionResponse = await contract.test();
 	console.log(transactionResponse);
+	const advice = await contract.getProposalAdvice(0);
+	console.log(advice);
+}
+
+const getAdvice = async () => {
+	const proposalData = await contract.proposals(0);
+	console.log(proposalData);
 }
 
 const getProposalData = async () => {
@@ -109,7 +130,8 @@ const getProposalData = async () => {
 	  return data.data;
 };
 
-callGaladriel();
+// submitProposals();
+getAdvice();
 // getProposalData();
 
 
