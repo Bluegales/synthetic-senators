@@ -7,7 +7,7 @@ import {DAOGovernor} from "../src/DAOGovernor.sol";
 
 contract DAOScript is Script {
     function run() public {
-        uint256 pk = vm.envUint("LOCAL_PK");
+        uint256 pk = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(pk);
 
         DAOToken token = new DAOToken();
