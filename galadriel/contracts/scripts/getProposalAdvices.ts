@@ -20,30 +20,10 @@ async function main() {
   // Create a contract instance
   const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-  // The proposal that advise should be generated for
-  const message = "Should we ban Bitcoin?"
-  const message2 = "Is democracy the best form of government?"
-
-  // Call the startChat function
-  const transactionResponse = await contract.createProposalsAdvice([message, message2], [0,1]);
-  const receipt = await transactionResponse.wait();
-  console.log(`Transaction sent, hash: ${receipt.hash}.\nExplorer: https://explorer.galadriel.com/tx/${receipt.hash}`)
-  console.log(`Proposal advise on message: "${message2}"`);
-
-  // loop and sleep by 1000ms, and keep printing `lastResponse` in the contract.
-  let lastResponse = await contract.getProposalAdvice(0);
-  let newResponse = lastResponse;
-
-  // print w/o newline
-  console.log("Waiting for response: ");
-  while (1) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    newResponse = await contract.getProposalAdvice(1);
-    console.log(newResponse);
-  }
-
-  // console.log(`Advise given: ${newResponse}`)
-
+  const resp = await contract.getProposalAdvice(0);
+  console.log(resp);
+  const resp2 = await contract.getProposalAdvice(1);
+  console.log(resp2);
 }
 
 async function getUserInput(): Promise<string | undefined> {
