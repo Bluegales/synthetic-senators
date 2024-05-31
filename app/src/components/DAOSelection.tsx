@@ -31,7 +31,7 @@ const DAOSelection: React.FC<{ onSelectDAO: (dao: DAO) => void }> = ({ onSelectD
             className="dao-card p-8 bg-slate-700 rounded-lg shadow-md cursor-pointer hover:shadow-lg hover:shadow-slate-600 transition-shadow"
             onClick={() => onSelectDAO(dao)}
           >
-            <img src={`https://picsum.photos/200/200?random=${dao.id}`} alt={dao.name} className="rounded mb-4" />
+            <img src={`${dao.image}`} alt={dao.name} className="rounded mb-4" />
             <p className="text-lg font-semibold">{dao.name}</p>
             <p className="text-sm">{dao.description}</p>
           </div>

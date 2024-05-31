@@ -53,7 +53,7 @@ const Home: React.FC = () => {
                 </ul>
               </div>
               <div className="flex justify-center">
-                <img src="mahatmai.png" alt="Placeholder" width="400px" className="rounded-lg shadow-md" />
+                <img src="images/mahatmai-min.png" alt="Placeholder" width="400px" className="rounded-lg shadow-md" />
               </div>
             </section>
 
@@ -61,22 +61,22 @@ const Home: React.FC = () => {
               <h2 className="text-3xl font-bold mb-8 text-gradient">How it works</h2>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div className="flex flex-col items-center">
-                  <img src="step1.png" alt="Step 1" className="mb-4" width="200px" />
+                  <img src="images/step1.png" alt="Step 1" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 1</h3>
                   <p className="text-lg">Connect your Wallet</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <img src="step2.png" alt="Step 2" className="mb-4" width="200px" />
+                  <img src="images/step2.png" alt="Step 2" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 2</h3>
                   <p className="text-lg">Select DAO</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <img src="step3.png" alt="Step 3" className="mb-4" width="200px" />
+                  <img src="images/step3.png" alt="Step 3" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 3</h3>
                   <p className="text-lg">Select AI Agent</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <img src="step4.png" alt="Step 4" className="mb-4" width="200px" />
+                  <img src="images/step4.png" alt="Step 4" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 4</h3>
                   <p className="text-lg">Delegate your voice to MahatmAI GandhDAO</p>
                 </div>

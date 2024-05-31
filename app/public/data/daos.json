@@ -3,25 +3,29 @@
       "type": "dao",
       "id": 1,
       "description": "Hi, it's me. The Dao",
-      "name": "UniSwap"
+      "name": "UniSwap",
+      "image": "images/daos/uniswap.png"
     },
     {
       "type": "dao",
       "id": 2,
       "description": "Hi, it's me. The Dao",
-      "name": "ENS"
+      "name": "ENS",
+      "image": "images/daos/ens.png"
     },
     {
       "type": "dao",
       "id": 3,
       "description": "Hi, it's me. The Dao",
-      "name": "NOUNS"
+      "name": "NOUNS",
+      "image": "images/daos/nouns.png"
     },
     {
       "type": "dao",
       "id": 4,
       "description": "Hi, it's me. The Dao",
-      "name": "Fluence DAO"
+      "name": "Fluence DAO",
+      "image": "images/daos/fluence.png"
     }
   ]
   

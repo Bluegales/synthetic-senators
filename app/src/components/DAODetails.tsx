@@ -30,7 +30,7 @@ const DAODetails: React.FC<{ daoName: string, onPersonSelect: () => void, onBack
             className="person-card p-4 bg-slate-700 rounded-lg shadow-md cursor-pointer hover:shadow-lg hover:shadow-slate-600 transition-shadow"
             onClick={onPersonSelect}
           >
-            <img src={`https://picsum.photos/100/100?random=${person.id + 3}`} alt={person.name} className="rounded mb-4" />
+            <img src={`${person.image}`} alt={person.name} className="rounded mb-4" />
             <p className="text-lg font-semibold">{person.name}</p>
             <p className="text-sm">{person.description}</p>
           </div>
