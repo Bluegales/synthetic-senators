@@ -5,8 +5,9 @@ const {ethers} = require("hardhat");
 
 async function main() {
   const contractABI = [
-    "function getProposalAdvise(string memory proposal, uint proposalId) public returns (uint)",
-    "function advises(uint) public view returns (string)"
+    "function createProposalsAdvice(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
+    "function getProposalAdvice(uint proposalId) public view returns (string memory)",
+    "function test() public view returns (string memory)"
   ];
 
   if (!process.env.ADVISOR_CONTRACT_ADDRESS) {
@@ -20,23 +21,23 @@ async function main() {
   const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
   // The proposal that advise should be generated for
-  const message = await getUserInput();
+  const message = "Should we ban Bitcoin?"
 
   // Call the startChat function
-  const transactionResponse = await contract.getProposalAdvise(message, 0);
+  const transactionResponse = await contract.createProposalsAdvice([message], [0]);
   const receipt = await transactionResponse.wait();
   console.log(`Transaction sent, hash: ${receipt.hash}.\nExplorer: https://explorer.galadriel.com/tx/${receipt.hash}`)
   console.log(`Proposal advise on message: "${message}"`);
 
   // loop and sleep by 1000ms, and keep printing `lastResponse` in the contract.
-  let lastResponse = await contract.advises(0);
+  let lastResponse = await contract.getProposalAdvice(0);
   let newResponse = lastResponse;
 
   // print w/o newline
   console.log("Waiting for response: ");
   while (1) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    newResponse = await contract.advises(0);
+    newResponse = await contract.getProposalAdvice(0);
     console.log(newResponse);
   }
 

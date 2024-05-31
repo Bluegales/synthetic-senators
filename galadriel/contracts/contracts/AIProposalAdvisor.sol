@@ -15,9 +15,16 @@ contract AIProposalAdvisor {
 	address public oracleAddress;
 	string public instruction;
 	string public name;
+	uint immutable public maxIterations = 5;
 
-	mapping(uint => string) public proposals;
-	mapping(uint => string) public advises;
+	struct Proposal {
+		string description;
+		string advice;
+		uint iteration;
+		bool isResolved;
+	}
+
+	mapping(uint => Proposal) public proposals;
 
 	event OracleAddressUpdated(address indexed newOracleAddress);
 
@@ -38,15 +45,24 @@ contract AIProposalAdvisor {
 		_;
 	}
 
+	function test() public pure returns (string memory) {
+		return "Hello, World!";
+	}
+
 	function setOracleAddress(address newOracleAddress) public onlyOwner {
 		oracleAddress = newOracleAddress;
 		emit OracleAddressUpdated(newOracleAddress);
 	}
 
-	// @todo stop same proposalId from being used multiple times
-	function getProposalAdvise(string memory proposal, uint proposalId) public {
-		proposals[proposalId] = proposal;
-		IOracle(oracleAddress).createLlmCall(proposalId);
+	function createProposalsAdvice(string[] memory proposalDescriptions, uint[] memory proposalIds) public {
+		require(proposalDescriptions.length == proposalIds.length, "Proposal descriptions and IDs must have the same length");
+		for (uint i = 0; i < proposalDescriptions.length; i++) {
+			Proposal storage proposal = proposals[proposalIds[i]];
+			proposal.description = proposalDescriptions[i];
+			proposal.isResolved = false;
+			proposal.iteration = 0;
+			IOracle(oracleAddress).createLlmCall(proposalIds[i]);
+		}
 	}
 
 	// @todo handle errors: standard error message for every agent?
@@ -55,24 +71,47 @@ contract AIProposalAdvisor {
 		string memory response,
 		string memory /*errorMessage*/
 	) public onlyOracle {
-		advises[proposalId] = response;
-		// @todo extract answer (y, n) and loop and store it
+		if (!isLastCharYN(response)) {
+			proposals[proposalId].iteration++;
+			if (proposals[proposalId].iteration < maxIterations) {
+				IOracle(oracleAddress).createLlmCall(proposalId);
+				return;
+			}
+		}
+		proposals[proposalId].advice = response;
+		proposals[proposalId].isResolved = true;
+	}
+
+	function getProposalAdvice(uint proposalId) public view returns (string memory) {
+		// require (proposals[proposalId].isResolved, "Proposal is not resolved");
+		return proposals[proposalId].advice;
 	}
 
 	function getMessageHistoryContents(uint proposalId) public view returns (string[] memory) {
 		string[] memory messages = new string[](1);
-		messages[0] = concatenateStrings(instruction, proposals[proposalId]);
+		messages[0] = concatenateStrings(instruction, proposals[proposalId].description);
 		return messages;
 	}
 
 	function getMessageHistoryRoles(uint proposalId) public pure returns (string[] memory) {
+		proposalId = proposalId;
 		string[] memory roles = new string[](1);
 		roles[0] = "system";
 		return roles;
 	}
 
-	function concatenateStrings(string memory _a, string memory _b) private pure returns (string memory) {
+	function concatenateStrings(string memory _a, string memory _b) internal pure returns (string memory) {
 		return string(abi.encodePacked(_a, _b));
+	}
+
+	function isLastCharYN(string memory str) internal pure returns (bool) {
+		bytes memory bStr = bytes(str);
+		bytes1 lastChar = bStr[bStr.length - 1];
+		if (lastChar == "Y" || lastChar == "N" || lastChar == "y" || lastChar == "n") {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
 
