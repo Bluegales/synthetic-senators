@@ -5,7 +5,7 @@ const {ethers} = require("hardhat");
 
 async function main() {
   const contractABI = [
-    "function createProposalsAdvice(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
+    "function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
     "function getProposalAdvice(uint proposalId) public view returns (string memory)",
     "function test() public view returns (string memory)"
   ];
@@ -25,7 +25,7 @@ async function main() {
   const message2 = "Is democracy the best form of government?"
 
   // Call the startChat function
-  const transactionResponse = await contract.createProposalsAdvice([message, message2], [0,1]);
+  const transactionResponse = await contract.submitProposals([message, message2], [0,1]);
   const receipt = await transactionResponse.wait();
   console.log(`Transaction sent, hash: ${receipt.hash}.\nExplorer: https://explorer.galadriel.com/tx/${receipt.hash}`)
   console.log(`Proposal advise on message: "${message2}"`);
@@ -38,7 +38,7 @@ async function main() {
   console.log("Waiting for response: ");
   while (1) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    newResponse = await contract.getProposalAdvice(1);
+    newResponse = await contract.getProposalAdvice(0);
     console.log(newResponse);
   }
 

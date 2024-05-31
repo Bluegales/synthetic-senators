@@ -54,7 +54,7 @@ contract AIProposalAdvisor {
 		emit OracleAddressUpdated(newOracleAddress);
 	}
 
-	function createProposalsAdvice(string[] memory proposalDescriptions, uint[] memory proposalIds) public {
+	function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public {
 		require(proposalDescriptions.length == proposalIds.length, "Proposal descriptions and IDs must have the same length");
 		for (uint i = 0; i < proposalDescriptions.length; i++) {
 			Proposal storage proposal = proposals[proposalIds[i]];
