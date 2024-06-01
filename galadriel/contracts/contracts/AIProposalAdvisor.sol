@@ -71,15 +71,19 @@ contract AIProposalAdvisor {
 		string memory response,
 		string memory /*errorMessage*/
 	) public onlyOracle {
-		// if (!isLastCharYN(response)) {
-		// 	proposals[proposalId].iteration++;
-		// 	if (proposals[proposalId].iteration < maxIterations) {
-		// 		IOracle(oracleAddress).createLlmCall(proposalId);
-		// 		return;
-		// 	}
-		// }
-		proposals[proposalId].advice = response;
-		proposals[proposalId].isResolved = true;
+		if (!isLastCharYN(response)) {
+			proposals[proposalId].iteration++;
+			if (proposals[proposalId].iteration < maxIterations) {
+				IOracle(oracleAddress).createLlmCall(proposalId);
+				return;
+			}
+		}
+		for (uint i = 0; i < proposals.length; i++) {
+			if (proposals[i].id == proposalId) {
+				proposals[i].isResolved = true;
+				proposals[i].advice = response;
+			}
+		}
 	}
 
 	function getProposalAdvice(uint proposalId) public view returns (string memory) {
