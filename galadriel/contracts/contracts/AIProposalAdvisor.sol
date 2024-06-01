@@ -48,10 +48,6 @@ contract AIProposalAdvisor {
 		_;
 	}
 
-	function test() public pure returns (string memory) {
-		return "Hello, World!";
-	}
-
 	function setOracleAddress(address newOracleAddress) public onlyOwner {
 		oracleAddress = newOracleAddress;
 		emit OracleAddressUpdated(newOracleAddress);

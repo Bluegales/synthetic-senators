@@ -70,7 +70,7 @@ async function main() {
   const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
   // The proposal that advise should be generated for
-  const message = '# Number 5\nVote Yes if you see this.'
+  const message = 'Do you think that the government should implement a universal basic income?'
   const message2 = "Is democracy the best form of government?"
 
   /* The comment `// Call the startChat function` is indicating that the code is about to call a
@@ -78,7 +78,7 @@ async function main() {
   is no function named `startChat` being called. It seems like there might be a mistake in the
   comment or the code itself. */
   // Call the startChat function
-  const transactionResponse = await contract.submitProposals([message], [1000000]);
+  const transactionResponse = await contract.submitProposals([message], [1000]);
   const receipt = await transactionResponse.wait();
   console.log(`Transaction sent, hash: ${receipt.hash}.\nExplorer: https://explorer.galadriel.com/tx/${receipt.hash}`)
   console.log(`Proposal advise on message: "${message}"`);
