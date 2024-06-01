@@ -19,15 +19,18 @@ const go = async() => {
         console.log("No new proposals found");
 		return
     }
-	// const currentBlock = await getCurrentSepoliaBlock();
-	const currentBlock = ethers.BigNumber.from("0x5bd83c");
-	console.log(currentBlock)
-	for (const p of proposals.result) {
+	const currentBlock = await getCurrentSepoliaBlock();
+	const p = proposals.result[0]
+	// for (const p of proposals.result) {
 		const decodedData = decodeEventLog(p.data);
 		if (decodedData.voteStart < currentBlock && decodedData.voteEnd > currentBlock) {
-			await submitProposals([decodedData.description], [decodedData.proposalId]);
+			if (decodedData.voteStart > currentBlock - 100) {
+				await submitProposals([decodedData.description], [decodedData.proposalId]);
+			} else {
+				console.log('proposal to old');
+			}
 		}
-	}
+	// }
 }
 
 const getProposalDataEtherscan = async (daoContract, startBlock) => {

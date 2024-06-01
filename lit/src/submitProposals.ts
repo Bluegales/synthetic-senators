@@ -6,8 +6,9 @@ import { promises as fs } from 'fs';
 import { serialize, recoverAddress } from "@ethersproject/transactions";
 import { joinSignature } from "@ethersproject/bytes";
 
-const privateKey = process.env.PRIVATE_KEY!;
-if (privateKey == undefined) {
+const privateKeyLit = process.env.PRIVATE_KEY_LIT!;
+const privateKeySepolia = process.env.PRIVATE_KEY_SEPOLIA!;
+if (privateKeyLit == undefined || privateKeySepolia == undefined) {
     console.error("error no private key");
     process.exit(1);
 }
@@ -15,7 +16,7 @@ const provider = new ethers.providers.JsonRpcProvider('https://chain-rpc.litprot
 const pkpKey = "0x0402560031ddd4d2d01a7914fe35fb9c7457c5a5828595d5171ded3095fab189c08d0cec45a6470d3ae03b998ebeecbcd6f051486123ada12ac039b6a6a24ea01d"
 
 async function main() {
-  const wallet = new ethers.Wallet(privateKey, provider);
+  const wallet = new ethers.Wallet(privateKeyLit, provider);
 
   let contractClient = new LitContracts({
     signer: wallet,
@@ -31,37 +32,45 @@ async function main() {
   ]);
 
   console.log("connected!")
-  const authSig = await getAuthSig(litNodeClient);
-
+  
   const litActionSubmitProposals: string = await fs.readFile("./actionSubmitProposals.js", 'utf8');
+  
+  const advisorAddresses = [
+    "0x4fD1234741028Adc400f57e7320281ACbA5EA36E",
+    "0xB65E1E617C01F8eB087B4657eAe688Ec66D0534E",
+    "0xf25b4f014AEE385320Afb753B3638177DA6CAB43",
+    "0xeBFdea5C5253E52eC2E3A1e4b95b0eC14244Fb8A",
+  ]
 
-  const results = await litNodeClient.executeJs({
-    code: litActionSubmitProposals,
-    authSig: authSig,
-    jsParams: {
-      contractAddress: "0x709E5941Ae771C642Ed78161495aD093261bb3AA",
-      daoContract: "0x59c6765e180ba50FaD3f089e6D26cDeb5eaC9CdA",
-      galadrielRpc: "https://devnet.galadriel.com",
-      sepoliaRpc: "https://ethereum-sepolia.rpc.subquery.network/public",
-      startBlock: '6019131',
-      pkpEthAddress: '0x09F051e7F87C9fC6eDD6E8460eb1dd52C8fd4663',
-      publicKey: pkpKey,
-      etherscanApiKey: 'FVMWRD8U4TIHZG41PX5JKD3CRGY5TX89Y2',
-    },
-  });
+  for (const advisor of advisorAddresses) {
+    const authSig = await getAuthSig(litNodeClient);
+    const results = await litNodeClient.executeJs({
+      code: litActionSubmitProposals,
+      authSig: authSig,
+      jsParams: {
+        contractAddress: advisor,
+        daoContract: "0x888cAEb76F96efF849D888306db261475DD06466",
+        galadrielRpc: "https://devnet.galadriel.com",
+        sepoliaRpc: "https://ethereum-sepolia.rpc.subquery.network/public",
+        startBlock: '6020610',
+        pkpEthAddress: '0x09F051e7F87C9fC6eDD6E8460eb1dd52C8fd4663',
+        publicKey: pkpKey,
+        etherscanApiKey: 'FVMWRD8U4TIHZG41PX5JKD3CRGY5TX89Y2',
+      },
+    });
+    console.log("results", results);
 
-  console.log("results", results);
-
-  const { signatures, response } = results;
-
-  // sadly this doesn't work 
-  // the signature is valid but its always from a different address
-  // the lit team didn't come back to us in time.
-  // submitTransaction(response as unknown as object, signatures);
-
-  // we have to sign it manually with a different address
-  submitTransactionManually(response as unknown as object)
-
+    const { signatures, response } = results;
+  
+    // sadly this doesn't work 
+    // the signature is valid but its always from a different address
+    // the lit team didn't come back to us in time.
+    // submitTransaction(response as unknown as object, signatures);
+  
+    // we have to sign it manually with a different address
+    submitTransactionManually(response as unknown as object)
+  }
+  
   await litNodeClient.disconnect();
 }
 
@@ -83,13 +92,8 @@ async function submitTransaction(response: object, signatures: any) {
 }
 
 async function submitTransactionManually(response: object) {
-  const privateKey = process.env.PRIVATE_KEY;
-  if (privateKey == undefined) {
-    console.log('ERROR no private key')
-    return
-  }
   const providerGaladriel = new ethers.providers.JsonRpcProvider("https://devnet.galadriel.com");
-  const wallet = new ethers.Wallet(privateKey, providerGaladriel);
+  const wallet = new ethers.Wallet(privateKeySepolia, providerGaladriel);
   const tx = {
     data: response['transactionData']['data'],
     to: response['transactionData']['to']

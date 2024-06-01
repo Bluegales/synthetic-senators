@@ -16,24 +16,14 @@ const go = async () => {
     console.log("last proposal:", proposalId - 1);
     const proposalData = await contract.proposals(proposalId - 1);
     console.log(proposalData);
-    // const advice = proposalData.advice;
-    const advice = 'Y';
+    const advice = proposalData.advice;
     if (advice == '') {
         console.log("no advice jet")
         return
     }
-    const words = advice.split(' ');
-    const lastWord = words[words.length - 1];
-    var result;
-    if (lastWord == "Y") {
-        result = 1
-    }
-    else if (lastWord == "N") {
-        result = 0
-    }
-    if (result) {
-        castVote(proposalData.id, result, proposalData.advice);
-    }
+    const message = proposalData.advice;
+    const result = message.charAt(message.length - 1) == 'Y' ? 1 : 0;
+    castVote(proposalData.id, result, proposalData.advice);
 }
 
 const castVote = async (proposalId, support, reason) => {

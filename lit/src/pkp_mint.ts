@@ -5,8 +5,8 @@ import { AuthMethodType } from '@lit-protocol/constants';
 import { getAuthSig } from "./authSig"
 import { LitAuthClient } from '@lit-protocol/lit-auth-client';
 
-const privateKey = process.env.PRIVATE_KEY!;
-if (privateKey == undefined) {
+const privateKeyLit = process.env.PRIVATE_KEY_LIT!;
+if (privateKeyLit == undefined) {
     console.error("error no private key");
     process.exit(1);
 }
@@ -14,7 +14,7 @@ if (privateKey == undefined) {
 const provider = new ethers.providers.JsonRpcProvider('https://chain-rpc.litprotocol.com/http')
 
 async function main() {
-    const wallet = new ethers.Wallet(privateKey, provider);
+    const wallet = new ethers.Wallet(privateKeyLit, provider);
 
     let contractClient = new LitContracts({
         signer: wallet,

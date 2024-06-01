@@ -2,8 +2,8 @@ import LitJsSdk from "@lit-protocol/lit-node-client-nodejs";
 import { ethers } from "ethers"
 import siwe from "siwe"
 
-const privateKey = process.env.PRIVATE_KEY!;
-if (privateKey == undefined) {
+const privateKeyLit = process.env.PRIVATE_KEY_LIT!;
+if (privateKeyLit == undefined) {
     console.error("error no private key");
     process.exit(1);
 }
@@ -12,7 +12,7 @@ export async function getAuthSig(litNodeClient: LitJsSdk.LitNodeClientNodeJs) {
   let nonce = await litNodeClient.getLatestBlockhash();
 
   // Initialize the signer
-  const wallet = new ethers.Wallet(privateKey);
+  const wallet = new ethers.Wallet(privateKeyLit);
   const address = ethers.utils.getAddress(await wallet.getAddress());
 
   // Craft the SIWE message
