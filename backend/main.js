@@ -16,6 +16,13 @@ const abi = [
 	"function getProposalAdvice(uint proposalId) public view returns (string memory)",
 	"function test() public view returns (string memory)",
 	{
+		"inputs": [
+		  {
+			"internalType": "uint256",
+			"name": "",
+			"type": "uint256"
+		  }
+		],
 		"name": "proposals",
 		"outputs": [
 		  {
@@ -138,6 +145,11 @@ const submitProposals = async (proposalDescriptions, proposalIds) => {
 const getAdvice = async (proposalId) => {
 	const proposalData = await contract.proposals(proposalId);
 	return proposalData.advice;
+}
+
+const getProposal = async (index) => {
+	const proposalData = await contract.proposals(index);
+	return proposalData;
 }
 
 const getProposalDataTally = async () => {
@@ -275,7 +287,7 @@ const main = async () => {
 			await new Promise(r => setTimeout(r, 5000));
 			console.log("Getting advice from Galadriel contract....")
 			for (let i = 0; i < newProposals.result.length; i++) {
-				proposalAdvice.push(await proposals(proposalIds.length - newProposals.result.length + i));
+				proposalAdvice.push(await getProposal(proposalIds.length - newProposals.result.length + i));
 				console.log(proposalAdvice[proposalAdvice.length - 1]);
 			}
 		}
