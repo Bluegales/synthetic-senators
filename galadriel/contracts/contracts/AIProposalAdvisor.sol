@@ -97,6 +97,15 @@ contract AIProposalAdvisor {
 		return "Proposal not found";
 	}
 
+	function setVoted(uint proposalId) public {
+		for (uint i = 0; i < proposals.length; i++) {
+			if (proposals[i].id == proposalId) {
+				proposals[i].isVoted = true;
+			}
+		}
+		require (false, "Proposal not found");
+	}
+
 	function getMessageHistoryContents(uint proposalId) public view returns (string[] memory) {
 		string[] memory messages = new string[](1);
 		messages[0] = concatenateStrings(instruction, proposals[proposalId].description);
