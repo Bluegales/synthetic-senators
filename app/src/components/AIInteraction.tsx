@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import { ethers } from 'ethers'
 import Modal from './Modal';
 import SuccessModal from './SuccessModal';
 import { DAO, Person } from '../types';
 import advisorContractABI from '../abis/advisorContractABI';
 import config from '../config.json';
+import { useWriteContract } from 'wagmi';
+import contractABI from '../abis/daoAbi.json';
+
+type AdviceItem = {
+  proposal: string;
+  advice: string;
+  positive: boolean;
+};
 
 const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> = ({ dao, person, onBack }) => {
+  const { writeContract } = useWriteContract();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [advice, setAdvice] = useState<string>('');
-  const [advicePositive, setAdvicePositive] = useState<boolean>(false);
+  const [adviceList, setAdviceList] = useState<AdviceItem[]>([]);
   const [instruction, setInstruction] = useState<string>("");
-  const [proposalDescription, setProposalDescription] = useState<string>('');
+  // const [proposalDescription, setProposalDescription] = useState<string>('');
 
   let contract: ethers.Contract | null = null;
 
@@ -29,54 +37,101 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
   }
 
   const getLastProposalData = async () => {
-    if (!contract) return { advice: 'Failed to fetch advice due to contract initialization error.', description: 'Failed to fetch proposal description.' };
+    const proposals : AdviceItem[] = [];
+    if (!contract) {
+      return [];
+    }
     try {
-      let proposalId = await contract.getProposalCount();
-      if (proposalId == 0) {
-        return { advice: 'Error: No proposals', description: 'Error: No proposals' };
-      } else {
-        proposalId -= 1;
+      const proposalCount = await contract.getProposalCount();
+      if (proposalCount === 0) {
+        return [];
       }
-      const proposalData = await contract.proposals(proposalId);
-      return { advice: proposalData.advice, description: proposalData.description };
+      for (let proposalId = 0; proposalId < proposalCount; proposalId++) {
+        const proposalData = await contract.proposals(proposalId);
+        var message = proposalData.advice;
+        const advicePositive = message.charAt(message.length - 1) == 'Y' ? true : false
+        message = message.slice(0, -1);
+        proposals.push({ advice: message, proposal: proposalData.description, positive: advicePositive });
+      }
+      return proposals;
     } catch (error) {
       console.error('Error fetching proposal data:', error);
-      return { advice: 'Failed to fetch advice.', description: 'Failed to fetch proposal description.' };
+      return [];
     }
   };
+  
+
+  // const getLastProposalData = async () => {
+  //   if (!contract) return { advice: 'Failed to fetch advice due to contract initialization error.', description: 'Failed to fetch proposal description.' };
+  //   try {
+  //     let proposalId = await contract.getProposalCount();
+  //     if (proposalId == 0) {
+  //       return { advice: 'Error: No proposals', description: 'Error: No proposals' };
+  //     } else {
+  //       proposalId -= 1;
+  //     }
+  //     const proposalData = await contract.proposals(proposalId);
+  //     return { advice: proposalData.advice, description: proposalData.description };
+  //   } catch (error) {
+  //     console.error('Error fetching proposal data:', error);
+  //     return { advice: 'Failed to fetch advice.', description: 'Failed to fetch proposal description.' };
+  //   }
+  // };
 
   const getInstruction = async () => {
-    if (!contract) return { instruction: 'Failed to get instruction'};
+    if (!contract) return { instruction: 'Failed to get instruction' };
     try {
       const instruction = await contract.instruction();
       return { instruction };
     } catch (error) {
       console.error('Error fetching proposal data:', error);
-      return { instruction: 'Failed to get instruction'};
+      return { instruction: 'Failed to get instruction' };
     }
   };
 
   useEffect(() => {
     const fetchProposalData = async () => {
-      const { advice, description } = await getLastProposalData();
-      setProposalDescription(description);
-      {
-        const words = advice.split(' ');
-        const lastWord = words[words.length - 1];
-        if (lastWord === 'Y') {
-          setAdvicePositive(true);
-          words.pop();
-        } else if (lastWord === 'N') {
-          setAdvicePositive(false);
-          words.pop();
-        }
-        setAdvice(words.join(' '));
-      }
+      const proposals = await getLastProposalData(); // Assuming this returns an array of proposals
+      // const processedProposals = proposals.map((proposal: any) => {
+      //   const { advice, description } = proposal;
+      //   const words = advice.split(' ');
+      //   const lastWord = words[words.length - 1];
+      //   let advicePositive = false;
+      //   if (lastWord === 'Y') {
+      //     advicePositive = true;
+      //     words.pop();
+      //   } else if (lastWord === 'N') {
+      //     advicePositive = false;
+      //     words.pop();
+      //   }
+      //   return {
+      //     advice: words.join(' '),
+      //     description,
+      //     advicePositive,
+      //   };
+      // });
+      setAdviceList(proposals);
     };
+    // const fetchProposalData = async () => {
+    //   const { advice, description } = await getLastProposalData();
+    //   setProposalDescription(description);
+    //   {
+    //     const words = advice.split(' ');
+    //     const lastWord = words[words.length - 1];
+    //     if (lastWord === 'Y') {
+    //       setAdvicePositive(true);
+    //       words.pop();
+    //     } else if (lastWord === 'N') {
+    //       setAdvicePositive(false);
+    //       words.pop();
+    //     }
+    //     setAdvice(words.join(' '));
+    //   }
+    // };
 
     const fetchInstruction = async () => {
       const instruction = await getInstruction();
-      setInstruction(instruction.instruction); 
+      setInstruction(instruction.instruction);
     }
 
     fetchProposalData();
@@ -94,26 +149,14 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
 
   const handleConfirm = async () => {
     setIsModalOpen(false);
-
-    try {
-      // Simulate API call
-      const response = await fetch('/api/delegate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ daoId: dao.id, personId: person.id }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Delegation failed');
-      }
-
-      setIsSuccessModalOpen(true);
-    } catch (error) {
-      setIsError(true);
-      setErrorMessage('Delegation failed. Please try again.');
-    }
+    writeContract({
+      address: '0x5d1f03cdD89a2ec9CE9948dBB9Ba3DEb911e90D2',
+      abi: contractABI,
+      functionName: 'delegate',
+      args: [
+        '0x3e6ddF30E936d17830aCfbdd16e6CdF9213Fce1E'
+      ]
+    })
   };
 
   const handleCloseSuccessModal = () => {
@@ -133,6 +176,8 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
           >
             Delegate
           </button>
+          <br></br>
+          <a href={`https://explorer.galadriel.com/address/${person.contractAddress}`} className="text-blue-500">{person.contractAddress}</a>
         </div>
       </div>
       <div className="chatbot mb-6 p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
@@ -141,10 +186,17 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
       </div>
       <div className="last-proposal p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
         <h3 className="text-xl font-bold mb-2">Last Proposal</h3>
-        <p>{proposalDescription}</p>
-        <div className={`p-4 rounded-lg ${advicePositive ? 'bg-green-500' : 'bg-red-500'}`}>
-          {advice}
-        </div>
+        {adviceList.map((item, index) => (
+          <div>
+            <p>{item.proposal}</p>
+            <div
+              key={index}
+              className={`p-4 rounded-lg ${item.positive ? 'bg-green-500' : 'bg-red-500'}`}
+            >
+              {item.advice}
+            </div>
+          </div>
+        ))}
       </div>
       <br />
       <button className="mb-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={onBack}>Back</button>
