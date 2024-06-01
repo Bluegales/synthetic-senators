@@ -254,7 +254,7 @@ const decodeEventLog = (data) => {
 }
 
 const getCurrentSepoliaBlock = async () => {
-	const provider = new ethers.providers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
+	const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
 	const currentBlock = await provider.getBlockNumber();
 	return currentBlock;
 }
@@ -277,7 +277,7 @@ function Proposal(id, description, summarizedDescription, advice, iteration, isV
 
 const main = async () => {
 	var startBlock = '6013300'
-	const daoContract = '0x7acf17102a5d3b5b71c8b151992bc0a72dd4bf3c';
+	const daoContract = '0x59c6765e180ba50FaD3f089e6D26cDeb5eaC9CdA';
 	const proposals = [];
 	console.log("Starting to process proposals from block: ", startBlock, "....\n");
 	while (1) {
@@ -301,7 +301,7 @@ const main = async () => {
 			}
 			if (proposals.length > prevAmount) {
 				console.log("\nSubmitting proposals to Galadriel contract....")
-				await submitProposals(proposals.slice(prevAmount).description, proposals.slice(prevAmount).id);
+				await submitProposals([proposals[proposals.length - 1].description], [proposals[proposals.length - 1].id]);
 				await new Promise(r => setTimeout(r, 5000));
 				console.log("Getting advice from Galadriel contract....")
 				for (let i = prevAmount; i < proposals.length; i++) {
@@ -319,5 +319,11 @@ const main = async () => {
 	}
 }
 
-main();
+const test = async () => {
+	const advice = await getProposal(4);
+	console.log(advice);
+}
+
+test();
+// main();
 
