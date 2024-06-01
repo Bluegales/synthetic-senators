@@ -411,7 +411,6 @@ const test = async () => {
 		transactionData: {
 			data: data.data,
 			to: '0x709E5941Ae771C642Ed78161495aD093261bb3AA',
-			nonce: nonce,
 			chainId: 696969
 		}
 	}
@@ -425,7 +424,7 @@ const getAllProposals = async () => {
 	}
 }
 
-// test();
-getAllProposals();
+test();
+// getAllProposals();
 // main();
 
