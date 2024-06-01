@@ -10,7 +10,7 @@ const cron = require('node-cron');
 const ethers = require('ethers');
 require('dotenv').config();
 
-// galadriel initialzation
+// galadriel initialization
 const abi = [
 	"function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
 	"function getProposalAdvice(uint proposalId) public view returns (string memory)",
@@ -131,6 +131,15 @@ const provider = new ethers.JsonRpcProvider(process.env.GALADRIEL_RPC_URL);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 const signer = wallet.connect(provider);
 const contract = new ethers.Contract(contractAddress, abi, signer);
+
+// dao contract initialization
+const daoAbi = [
+];
+const daoContractAddress = '0x59c6765e180ba50FaD3f089e6D26cDeb5eaC9CdA';
+const daoProvider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
+const daoWallet = new ethers.Wallet(process.env.PRIVATE_KEY, daoProvider);
+const daoSigner = daoWallet.connect(daoProvider);
+const daoContract = new ethers.Contract(daoContractAddress, daoAbi, daoSigner);
 
 const submitProposals = async (proposalDescriptions, proposalIds) => {
 	try {
@@ -259,6 +268,10 @@ const getCurrentSepoliaBlock = async () => {
 	return currentBlock;
 }
 
+const voteOnProposal = async (proposalId, vote) => {
+	
+}
+
 // // Schedule the contract call to occur once per second
 // cron.schedule('* * * * * *', async () => {
 // 	await callContractMethod();
@@ -304,8 +317,16 @@ const main = async () => {
 				await new Promise(r => setTimeout(r, 5000));
 				console.log("Getting advice from Galadriel contract....")
 				for (let i = prevAmount; i < proposals.length; i++) {
-					proposals[i].advice = await getAdvice(i);
-					console.log(proposals[i].advice);
+					proposals[i].advice = await getAdvice(proposals[i].id);
+					if (proposals[i].advice.slice(-1) == "Y") {
+						proposals[i].isVoted = true;
+					}
+					else if (proposals[i].advice.slice(-1) == "N") {
+						proposals[i].isVoted = false;
+					}
+					else {
+						console.log("Invalid advice: ", proposals[i].advice);
+					}
 				}
 			}
 			else {
@@ -319,8 +340,12 @@ const main = async () => {
 }
 
 const test = async () => {
-	const advice = await getProposal(5);
-	console.log(advice);
+	var i = 0;
+	while (1) {
+		const advice = await getProposal(i);
+		console.log(advice);
+		i++;
+	}
 }
 
 test();
