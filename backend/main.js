@@ -17,17 +17,45 @@ const abi = [
 	"function test() public view returns (string memory)",
 	{
 		"name": "proposals",
-		"type": "function",
-		"inputs": [
-		  { "name": "proposalId", "type": "uint" }
-		],
 		"outputs": [
-		  { "name": "description", "type": "string" },
-		  { "name": "advice", "type": "string" },
-		  { "name": "iteration", "type": "uint" },
-		  { "name": "isResolved", "type": "bool" }
+		  {
+			"internalType": "uint256",
+			"name": "id",
+			"type": "uint256"
+		  },
+		  {
+			"internalType": "string",
+			"name": "description",
+			"type": "string"
+		  },
+		  {
+			"internalType": "string",
+			"name": "summarizedDescription",
+			"type": "string"
+		  },
+		  {
+			"internalType": "string",
+			"name": "advice",
+			"type": "string"
+		  },
+		  {
+			"internalType": "uint256",
+			"name": "iteration",
+			"type": "uint256"
+		  },
+		  {
+			"internalType": "bool",
+			"name": "isVoted",
+			"type": "bool"
+		  },
+		  {
+			"internalType": "bool",
+			"name": "isResolved",
+			"type": "bool"
+		  }
 		],
-		"stateMutability": "view"
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"type": "event",
@@ -247,7 +275,7 @@ const main = async () => {
 			await new Promise(r => setTimeout(r, 5000));
 			console.log("Getting advice from Galadriel contract....")
 			for (let i = 0; i < newProposals.result.length; i++) {
-				proposalAdvice.push(await getAdvice(proposalIds[proposalIds.length - newProposals.result.length + i]));
+				proposalAdvice.push(await proposals(proposalIds.length - newProposals.result.length + i));
 				console.log(proposalAdvice[proposalAdvice.length - 1]);
 			}
 		}
