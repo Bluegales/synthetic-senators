@@ -12,11 +12,20 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
   const [errorMessage, setErrorMessage] = useState('');
   const [advice, setAdvice] = useState<string>('');
 
-  const contractAddress = process.env.REACT_APP_ADVISOR_CONTRACT_ADDRESS!;
-  const provider = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_GALADRIEL_RPC_URL);
-  const contract = new ethers.Contract(contractAddress, advisorContractABI, provider);
+  let contract: ethers.Contract | null = null;
+
+  try {
+    const contractAddress = process.env.REACT_APP_ADVISOR_CONTRACT_ADDRESS!;
+    const provider = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_GALADRIEL_RPC_URL);
+    contract = new ethers.Contract(contractAddress, advisorContractABI, provider);
+  } catch (error) {
+    console.error('Error initializing contract:', error);
+    setErrorMessage('Failed to initialize contract. Please check the contract address and provider URL.');
+    setIsError(true);
+  }
 
   const getAdvice = async (proposalId: number) => {
+    if (!contract) return 'Failed to fetch advice due to contract initialization error.';
     try {
       const proposalData = await contract.proposals(proposalId);
       return proposalData.advice;
@@ -33,9 +42,9 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
     };
 
     fetchAdvice();
-  }, []);
+  }, [contract]);
 
-  const handleDelegate = async () => {
+  const handleDelegate = () => {
     setIsModalOpen(true);
   };
 
