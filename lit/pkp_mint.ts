@@ -13,11 +13,11 @@ async function main() {
 
     let contractClient = new LitContracts({
         signer: wallet,
-        network: 'manzano',
+        network: 'cayenne',
     });
     const litNodeClient = new LitJsSdk.LitNodeClientNodeJs({
         alertWhenUnauthorized: false,
-        litNetwork: 'manzano',
+        litNetwork: 'cayenne',
     });
     await Promise.all([
         litNodeClient.connect(),
