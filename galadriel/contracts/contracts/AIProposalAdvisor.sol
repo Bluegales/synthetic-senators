@@ -93,6 +93,10 @@ contract AIProposalAdvisor {
 		return "Proposal not found";
 	}
 
+	function getProposalCount() public view returns (uint256) {
+		return proposals.length;
+	}
+
 	function setVoted(uint256 proposalId) public {
 		for (uint i = 0; i < proposals.length; i++) {
 			if (proposals[i].id == proposalId) {
