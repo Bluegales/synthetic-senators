@@ -11,6 +11,7 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [advice, setAdvice] = useState<string>('');
+  const [proposalDescription, setProposalDescription] = useState<string>('');
 
   let contract: ethers.Contract | null = null;
 
@@ -24,24 +25,25 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
     setIsError(true);
   }
 
-  const getAdvice = async (proposalId: number) => {
-    if (!contract) return 'Failed to fetch advice due to contract initialization error.';
+  const getProposalData = async (proposalId: number) => {
+    if (!contract) return { advice: 'Failed to fetch advice due to contract initialization error.', description: 'Failed to fetch proposal description.' };
     try {
       const proposalData = await contract.proposals(proposalId);
-      return proposalData.advice;
+      return { advice: proposalData.advice, description: proposalData.description };
     } catch (error) {
-      console.error('Error fetching advice:', error);
-      return 'Failed to fetch advice.';
+      console.error('Error fetching proposal data:', error);
+      return { advice: 'Failed to fetch advice.', description: 'Failed to fetch proposal description.' };
     }
   };
 
   useEffect(() => {
-    const fetchAdvice = async () => {
-      const adviceText = await getAdvice(0); // Replace 0 with the actual proposal ID
-      setAdvice(adviceText);
+    const fetchProposalData = async () => {
+      const { advice, description } = await getProposalData(0); // Replace with the actual proposal ID. Currently mocked for the first
+      setAdvice(advice);
+      setProposalDescription(description);
     };
 
-    fetchAdvice();
+    fetchProposalData();
   }, [contract]);
 
   const handleDelegate = () => {
@@ -101,7 +103,7 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
       </div>
       <div className="last-proposal p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
         <h3 className="text-xl font-bold mb-2">Last Proposal</h3>
-        <p>Last Proposal Content</p>
+        <p>{proposalDescription}</p>
       </div>
       <br />
       <button className="mb-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={onBack}>Back</button>
