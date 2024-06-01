@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Person } from '../types';
+import { DAO, Person } from '../types';
 
-const DAODetails: React.FC<{ daoName: string, onPersonSelect: () => void, onBack: () => void }> = ({ daoName, onPersonSelect, onBack }) => {
+const DAODetails: React.FC<{ dao: DAO, onPersonSelect: (person: Person) => void, onBack: () => void }> = ({ dao, onPersonSelect, onBack }) => {
   const [persons, setPersons] = useState<Person[]>([]);
 
   useEffect(() => {
@@ -21,23 +21,31 @@ const DAODetails: React.FC<{ daoName: string, onPersonSelect: () => void, onBack
   }, []);
 
   return (
-    <section className="p-8 w-5/6 mx-auto mt-24">
-      <h1 className="text-2xl font-bold mb-6">{daoName}</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <section className="p-10 w-5/6 mx-auto mt-4">
+      <center>
+        <h1 className="text-2xl font-bold mb-6">{dao.name}</h1>
+        <div> 
+        <img src={`${dao.image}`} alt={dao.name} width="150px" className="rounded" />
+          <br></br>
+          <button className="mb-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={onBack}>Back</button>
+          <br></br>
+        </div>
+      </center>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {persons.map((person) => (
           <div
             key={person.id}
             className="person-card p-4 bg-slate-700 rounded-lg shadow-md cursor-pointer hover:shadow-lg hover:shadow-slate-600 transition-shadow"
-            onClick={onPersonSelect}
+            onClick={() => onPersonSelect(person)}
           >
-            <img src={`https://picsum.photos/100/100?random=${person.id + 3}`} alt={person.name} className="rounded mb-4" />
+            <img src={`${person.image}`} alt={person.name} className="rounded mb-4" width="200px" />
             <p className="text-lg font-semibold">{person.name}</p>
             <p className="text-sm">{person.description}</p>
           </div>
         ))}
       </div>
-      <br></br>
-      <button className="mb-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={onBack}>Back</button>
+      <br />
+
     </section>
   );
 };

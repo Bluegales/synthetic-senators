@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import SuccessModal from './SuccessModal';
+import { DAO, Person } from '../types';
 
-const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> = ({ dao, person, onBack }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleDelegate = () => {
+  const handleDelegate = async () => {
     setIsModalOpen(true);
   };
 
@@ -17,15 +18,27 @@ const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     setErrorMessage('');
   };
 
-  const handleConfirm = () => {
+  
+  const handleConfirm = async () => {
     setIsModalOpen(false);
 
-    // Delegation issue simulation. Set to false for failed, true for success
-    const delegationSuccessful = true; 
+    try {
+      // Simulate API call
+      const response = await fetch('/api/delegate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ daoId: dao.id, personId: person.id }),
+      });
 
-    if (delegationSuccessful) {
+      if (!response.ok) {
+      // if (response.ok) { //comment this out to always get the modal
+        throw new Error('Delegation failed');
+      }
+
       setIsSuccessModalOpen(true);
-    } else {
+    } catch (error) {
       setIsError(true);
       setErrorMessage('Delegation failed. Please try again.');
     }
@@ -38,9 +51,10 @@ const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <section className="p-8 w-5/6 max-w-screen-lg mx-auto mt-24">
       <div className="ai-header flex justify-between items-center mb-6">
-        <img src="https://picsum.photos/100/100?random=6" alt="AI Image" className="rounded-full shadow-md" />
+        <img src={person.image} alt={person.name} className="rounded-full shadow-md" width="300px" />
         <div className="ai-description flex-grow pl-4">
-          <p className="text-lg mb-4">Description</p>
+          <h2 className="text-2xl font-bold mb-4">{person.name}</h2>
+          <p className="text-lg mb-4">{person.description}</p>
           <button
             className="delegate-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={handleDelegate}
@@ -53,6 +67,7 @@ const AIInteraction: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <p>Chatbot conversation here...</p>
       </div>
       <div className="last-proposal p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
+        <h3 className="text-xl font-bold mb-2">Last Proposal</h3>
         <p>Last Proposal Content</p>
       </div>
       <br />
