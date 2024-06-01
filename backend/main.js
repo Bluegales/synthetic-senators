@@ -351,7 +351,7 @@ const main = async () => {
 			for (let i = 0; i < newProposals.result.length; i++) {
 				const decodedData = decodeEventLog(newProposals.result[i].data);
 				if (decodedData.voteStart < currentBlock && decodedData.voteEnd > currentBlock) {
-					proposals.push(new Proposal(decodedData.proposalId, decodedData.description, "", "", 0, false, false));
+					proposals.push(new Proposal(decodedData.proposalId, decodedData.description, decodedData.description, "", 0, false, false));
 					console.log(proposals.length - 1, "proposal:	", proposals[proposals.length - 1]);
 					startBlock = parseInt(newProposals.result[i].blockNumber) + 1;
 					console.log("New starting block:", startBlock)
@@ -359,33 +359,31 @@ const main = async () => {
 			}
 			if (proposals.length > prevAmount) {
 				console.log("\nSubmitting proposals to Galadriel contract....")
-				await submitProposals([proposals[proposals.length - 1].description], [proposals[proposals.length - 1].id]);
+				// await submitProposals([proposals[proposals.length - 1].description], [proposals[proposals.length - 1].id]);
 				const lastProposal = await getProposalCount() - BigInt(1);
+				const proposal = await getProposal(lastProposal);
 				while (1) {
-					const proposal = await getProposal(lastProposal);
 					if (proposal.isResolved) {
 						console.log("Proposal resolved. Advice: ", proposal.advice);
 						break;
 					}
 					await new Promise(r => setTimeout(r, 2000));
 				}
-				for (let i = 0; i < proposals.length; i++) {
-					console.log("Voting for proposal: ", proposals[i].id);
-					proposals[i].advice = await getAdvice(proposals[i].id);
-					const string = proposals[i].advice;
-					const words = string.split(' ');
-					const lastWord = words[words.length - 2];
-					console.log("last word: ", lastWord)
-					if (lastWord == "Y") {
-						castVote(proposals[i].id, 1, proposals[i].advice);
-					}
-					else if (lastWord == "N") {
-						console.log("casting vote...")
-						castVote(proposals[i].id, 0, proposals[i].advice);
-					}
-					else {
-						console.log("Invalid advice: ", proposals[i].advice);
-					}
+				console.log("Voting for proposal: ", proposal.id);
+				proposal.advice = await getAdvice(proposal.id);
+				const string = proposal.advice;
+				const words = string.split(' ');
+				const lastWord = words[words.length - 1];
+				console.log("last word: ", lastWord)
+				if (lastWord == "Y") {
+					castVote(proposal.id, 1, proposal.advice);
+				}
+				else if (lastWord == "N") {
+					console.log("casting vote...")
+					castVote(proposal.id, 0, proposal.advice);
+				}
+				else {
+					console.log("Invalid advice: ", proposal.advice);
 				}
 			}
 			else {
@@ -406,7 +404,6 @@ const submitTransactionManually = async (transactionObject) => {
 
 const test = async () => {
 	const data = await contract.submitProposals.populateTransaction(["This is a test. Please vote yes."], [23984723984]);
-	const nonce = await provider.getTransactionCount(wallet.address);
 	const transactionObject = {
 		transactionData: {
 			data: data.data,
@@ -424,7 +421,7 @@ const getAllProposals = async () => {
 	}
 }
 
-test();
+// test();
 // getAllProposals();
-// main();
+main();
 
