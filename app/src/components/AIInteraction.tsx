@@ -1,13 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import Modal from './Modal';
 import SuccessModal from './SuccessModal';
 import { DAO, Person } from '../types';
+import advisorContractABI from '../abis/advisorContractABI';
 
 const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> = ({ dao, person, onBack }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [advice, setAdvice] = useState<string>('');
+
+  const contractAddress = process.env.REACT_APP_ADVISOR_CONTRACT_ADDRESS!;
+  const provider = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_GALADRIEL_RPC_URL);
+  const contract = new ethers.Contract(contractAddress, advisorContractABI, provider);
+
+  const getAdvice = async (proposalId: number) => {
+    try {
+      const proposalData = await contract.proposals(proposalId);
+      return proposalData.advice;
+    } catch (error) {
+      console.error('Error fetching advice:', error);
+      return 'Failed to fetch advice.';
+    }
+  };
+
+  useEffect(() => {
+    const fetchAdvice = async () => {
+      const adviceText = await getAdvice(0); // Replace 0 with the actual proposal ID
+      setAdvice(adviceText);
+    };
+
+    fetchAdvice();
+  }, []);
 
   const handleDelegate = async () => {
     setIsModalOpen(true);
@@ -18,7 +44,6 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
     setErrorMessage('');
   };
 
-  
   const handleConfirm = async () => {
     setIsModalOpen(false);
 
@@ -33,7 +58,6 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
       });
 
       if (!response.ok) {
-      // if (response.ok) { //comment this out to always get the modal
         throw new Error('Delegation failed');
       }
 
@@ -64,7 +88,7 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
         </div>
       </div>
       <div className="chatbot mb-6 p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
-        <p>Chatbot conversation here...</p>
+        <p>{advice}</p>
       </div>
       <div className="last-proposal p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
         <h3 className="text-xl font-bold mb-2">Last Proposal</h3>
@@ -72,7 +96,7 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
       </div>
       <br />
       <button className="mb-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={onBack}>Back</button>
-      
+
       {isError && (
         <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
           {errorMessage}
