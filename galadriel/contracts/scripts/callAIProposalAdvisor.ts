@@ -21,16 +21,20 @@ async function main() {
   const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
   // The proposal that advise should be generated for
-  const message = "Should we ban Bitcoin?"
+  const message = "# Test Proposal 2\n"
   const message2 = "Is democracy the best form of government?"
 
+  /* The comment `// Call the startChat function` is indicating that the code is about to call a
+  function named `startChat` on the contract instance. However, in the provided code snippet, there
+  is no function named `startChat` being called. It seems like there might be a mistake in the
+  comment or the code itself. */
   // Call the startChat function
   const transactionResponse = await contract.submitProposals([message, message2], [0,1]);
   const receipt = await transactionResponse.wait();
   console.log(`Transaction sent, hash: ${receipt.hash}.\nExplorer: https://explorer.galadriel.com/tx/${receipt.hash}`)
   console.log(`Proposal advise on message: "${message2}"`);
 
-  // loop and sleep by 1000ms, and keep printing `lastResponse` in the contract.
+  // // loop and sleep by 1000ms, and keep printing `lastResponse` in the contract.
   let lastResponse = await contract.getProposalAdvice(0);
   let newResponse = lastResponse;
 
@@ -44,30 +48,6 @@ async function main() {
 
   // console.log(`Advise given: ${newResponse}`)
 
-}
-
-async function getUserInput(): Promise<string | undefined> {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  })
-
-  const question = (query: string): Promise<string> => {
-    return new Promise((resolve) => {
-      rl.question(query, (answer) => {
-        resolve(answer)
-      })
-    })
-  }
-
-  try {
-    const input = await question("Enter a proposal: ")
-    rl.close()
-    return input
-  } catch (err) {
-    console.error('Error getting user input:', err)
-    rl.close()
-  }
 }
 
 main()

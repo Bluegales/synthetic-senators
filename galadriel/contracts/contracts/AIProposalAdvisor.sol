@@ -77,6 +77,10 @@ contract AIProposalAdvisor {
 				IOracle(oracleAddress).createLlmCall(proposalId);
 				return;
 			}
+			else {
+				proposals[proposalId].isResolved = true;
+				proposals[proposalId].advice = "Cannot answer the question.";
+			}
 		}
 		for (uint i = 0; i < proposals.length; i++) {
 			if (proposals[i].id == proposalId) {
