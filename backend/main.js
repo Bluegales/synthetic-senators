@@ -290,7 +290,6 @@ const main = async () => {
 			const prevAmount = proposals.length;
 			for (let i = 0; i < newProposals.result.length; i++) {
 				const currentBlock = await getCurrentSepoliaBlock();
-				console.log("Current block:", currentBlock);
 				const decodedData = decodeEventLog(newProposals.result[i].data);
 				if (decodedData.voteStart < currentBlock && decodedData.voteEnd > currentBlock) {
 					proposals.push(new Proposal(decodedData.proposalId, decodedData.description, "", "", 0, false, false));
@@ -305,7 +304,7 @@ const main = async () => {
 				await new Promise(r => setTimeout(r, 5000));
 				console.log("Getting advice from Galadriel contract....")
 				for (let i = prevAmount; i < proposals.length; i++) {
-					proposals[i].advice = await getAdvice(proposals[i].id);
+					proposals[i].advice = await getAdvice(i);
 					console.log(proposals[i].advice);
 				}
 			}
@@ -320,7 +319,7 @@ const main = async () => {
 }
 
 const test = async () => {
-	const advice = await getProposal(4);
+	const advice = await getProposal(5);
 	console.log(advice);
 }
 
