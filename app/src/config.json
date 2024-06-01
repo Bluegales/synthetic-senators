@@ -1,0 +1,4 @@
+{
+    "sepoliaRpcUrl": "https://ethereum-sepolia.rpc.subquery.network/public",
+    "galadrielRpcUrl": "https://devnet.galadriel.com"
+}

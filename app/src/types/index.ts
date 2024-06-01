@@ -10,5 +10,6 @@ export interface DAO {
     name: string;
     description: string;
     image: string;
+    contractAddress: string;
   }
   

@@ -2,41 +2,33 @@
     {
       "type": "person",
       "id": 1,
-      "image": "images/personas/far_right.png",
-      "name": "Far Right Persona",
-      "description": "A politician with a far-right ideology, known for strong nationalist views, strict immigration policies, and a focus on traditional values.",
-      "prompt": "As a far-right politician, how would you vote on this DAO proposal? Consider the impact on national sovereignty, traditional values, and economic self-reliance."
+      "image": "images/personas/daonald-dump.png",
+      "name": "DAOnald Dump",
+      "description": "A businessman, known for his skepticism towards cryptocurrencies. He has concerns about the potential for digital currencies to facilitate illegal activities.",
+      "contractAddress": "0x709E5941Ae771C642Ed78161495aD093261bb3AA"
     },
     {
       "type": "person",
       "id": 2,
-      "image": "images/personas/far_left.png",
-      "name": "Far Left Persona",
-      "description": "A politician with a far-left ideology, known for advocating for social justice, wealth redistribution, and extensive government intervention in the economy.",
-      "prompt": "As a far-left politician, how would you vote on this DAO proposal? Consider the impact on social equality, wealth redistribution, and government regulation."
+      "image": "images/personas/joe-aiden.png",
+      "name": "Joe AIden",
+      "description": "A career politician, known for a more cautious approach to cryptocurrencies, emphasizing the need for regulatory oversight to protect investors and ensure financial stability.",
+      "contractAddress": "0x709E5941Ae771C642Ed78161495aD093261bb3AA"
     },
     {
       "type": "person",
       "id": 3,
-      "image": "images/personas/left.png",
-      "name": "Left-Wing Persona",
-      "description": "A politician with a left-wing ideology, supporting progressive policies, environmental protection, and social welfare programs.",
-      "prompt": "As a left-wing politician, how would you vote on this DAO proposal? Consider the impact on social welfare, environmental sustainability, and progressive reforms."
+      "image": "images/personas/mahatma-ghandao.png",
+      "name": "Mahatma GhanDAO",
+      "description": "A revered leader and advocate for nonviolent resistance, known for his commitment to simplicity, self-sufficiency, and ethical living.",
+      "contractAddress": "0x709E5941Ae771C642Ed78161495aD093261bb3AA"
     },
     {
       "type": "person",
       "id": 4,
-      "image": "images/personas/right.png",
-      "name": "Right-Wing Persona",
-      "description": "A politician with a right-wing ideology, focusing on free market principles, limited government intervention, and individual responsibility.",
-      "prompt": "As a right-wing politician, how would you vote on this DAO proposal? Consider the impact on economic freedom, individual responsibility, and market efficiency."
-    },
-    {
-      "type": "person",
-      "id": 5,
-      "image": "images/personas/centrist.png",
-      "name": "Centrist Persona",
-      "description": "A politician with a centrist ideology, seeking a balanced approach between progressive and conservative policies, aiming for practical solutions.",
-      "prompt": "As a centrist politician, how would you vote on this DAO proposal? Consider the balance between social welfare, economic efficiency, and pragmatic governance."
+      "image": "images/personas/vitailik-buterin.png",
+      "name": "VitAIlik Buterin",
+      "description": "A visionary programmer and co-founder of Ethereum, known for his innovations in blockchain technology. Vitalik Buterin advocates for the transformative potential of cryptocurrencies, emphasizing transparency, security, and decentralization.",
+      "contractAddress": "0x709E5941Ae771C642Ed78161495aD093261bb3AA"
     }
 ]

@@ -41,14 +41,14 @@ const Home: React.FC = () => {
         {!isConnected ? (
           <div className="w-full">
             <section className="text-center mb-16">
-              <h1 className="text-5xl font-bold mb-4">Welcome to MahatmAI GandhDAO!</h1>
+              <h1 className="text-5xl font-bold mb-4">Synthetic Senators</h1>
               <p className="text-xl font-semibold mb-4">Simplify Your DAO Voting</p>
-              <p className="text-lg mb-4">Are you tired of constantly having to vote on proposals? Let our advanced AI agents handle it for you. At MahatmAI GandhDAO, we make DAO voting effortless and efficient.</p>
+              <p className="text-lg mb-4">Are you tired of constantly having to vote on proposals? Let our advanced AI agents handle it for you. At Synthetic Senators, we make DAO voting effortless and efficient.</p>
             </section>
             
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
               <div>
-                <h2 className="text-2xl font-bold mb-4 text-gradient">Why Choose MahatmAI GandhDAO?</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gradient">Why Choose Synthetic Senators?</h2>
                 <ul className="list-inside">
                   <li className="text-lg mb-2"><b>Automated Voting:</b><br /> Our AI agents analyze proposals and cast votes on your behalf, saving you time and effort.</li>
                   <li className="text-lg mb-2"><b>Intelligent Decision-Making:</b><br /> Leveraging cutting-edge AI, our agents make informed decisions based on your preferences and guidelines.</li>
@@ -57,7 +57,7 @@ const Home: React.FC = () => {
                 </ul>
               </div>
               <div className="flex justify-center">
-                <img src="images/mahatmai-min.png" alt="Placeholder" width="400px" className="rounded-lg shadow-md" />
+                <img src="images/logo.png" alt="Placeholder" width="400px" className="rounded-lg shadow-md" />
               </div>
             </section>
 
