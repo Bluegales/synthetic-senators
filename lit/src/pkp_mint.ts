@@ -1,24 +1,28 @@
 import { LitContracts } from '@lit-protocol/contracts-sdk';
 import { ethers } from "ethers";
 import LitJsSdk from "@lit-protocol/lit-node-client-nodejs";
-import { AuthMethodType, AuthMethodScope } from '@lit-protocol/constants';
+import { AuthMethodType } from '@lit-protocol/constants';
 import { getAuthSig } from "./authSig"
 import { LitAuthClient } from '@lit-protocol/lit-auth-client';
 
-const privateKey = 'c86aa794580749f172a1a40ccae974abd383b7862fac993b733b7c5c160d1b7d';
+const privateKey = process.env.PRIVATE_KEY!;
+if (privateKey == undefined) {
+    console.error("error no private key");
+    process.exit(1);
+}
+
 const provider = new ethers.providers.JsonRpcProvider('https://chain-rpc.litprotocol.com/http')
-const tokenId = ethers.BigNumber.from("0xbb83f7b463902f2e8cafc1eab596a4b174315d8591edbf4b59c97f03bb01ea2e")
 
 async function main() {
     const wallet = new ethers.Wallet(privateKey, provider);
 
     let contractClient = new LitContracts({
         signer: wallet,
-        network: 'manzano',
+        network: 'cayenne',
     });
     const litNodeClient = new LitJsSdk.LitNodeClientNodeJs({
         alertWhenUnauthorized: false,
-        litNetwork: 'manzano',
+        litNetwork: 'cayenne',
     });
     await Promise.all([
         litNodeClient.connect(),
@@ -37,13 +41,23 @@ async function main() {
     
     const authId = await LitAuthClient.getAuthIdByAuthMethod(authMethod);
 
-    const setScopeTx =
-    await contractClient.pkpPermissionsContract.write.addPermittedAuthMethodScope(
-      tokenId,
-      AuthMethodType.EthWallet,
-      authId, // auth id
-      AuthMethodScope.SignAnything
-    );
+    const mintTx =
+        await contractClient.pkpHelperContract.write.mintNextAndAddAuthMethods(
+            2,
+            [AuthMethodType.EthWallet],
+            [authId],
+            ['0x'], // only for web3auth atm
+            [[1]], // sign anything
+            true, // addPkpEthAddressAsPermittedAddress,
+            false, // sendPkpToItself,
+            {
+                value: mintCost,
+            }
+        );
+
+    const mintTxReceipt = await mintTx.wait();
+
+    const tokenId = mintTxReceipt.events![0].topics[1];
 
     // -- get the scopes
     const scopes =
@@ -66,10 +80,10 @@ async function main() {
     }
 
     // ==================== Success ====================
-    console.log(`ContractsSDK set permission
+    console.log(`ContractsSDK mints a PKP
     Logs:
     ---
-    mintHash: ${setScopeTx.hash}
+    mintHash: ${mintTxReceipt.transactionHash}
     tokenId: ${tokenId}
     scope 1 (sign anything): ${scopes[1]}
     scope 2 (only sign messages): ${scopes[2]}

@@ -1,4 +1,4 @@
-# Aigarchy
+# Synthetic Senators
 Delegate your DAO voting power to customisable AI agents that vote on your behalf, fully decentralized using LIT Protocol and Galadriel.
 
 ## Description
