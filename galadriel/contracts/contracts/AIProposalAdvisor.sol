@@ -18,13 +18,16 @@ contract AIProposalAdvisor {
 	uint immutable public maxIterations = 5;
 
 	struct Proposal {
+		uint id;
 		string description;
+		string summarizedDescription;
 		string advice;
 		uint iteration;
+		bool isVoted;
 		bool isResolved;
 	}
 
-	mapping(uint => Proposal) public proposals;
+	Proposal[] public proposals;
 
 	event OracleAddressUpdated(address indexed newOracleAddress);
 
@@ -57,10 +60,7 @@ contract AIProposalAdvisor {
 	function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public {
 		require(proposalDescriptions.length == proposalIds.length, "Proposal descriptions and IDs must have the same length");
 		for (uint i = 0; i < proposalDescriptions.length; i++) {
-			Proposal storage proposal = proposals[proposalIds[i]];
-			proposal.description = proposalDescriptions[i];
-			proposal.isResolved = false;
-			proposal.iteration = 0;
+			proposals.push(Proposal(proposalIds[i], proposalDescriptions[i], "", "", 0, false, false));
 			IOracle(oracleAddress).createLlmCall(proposalIds[i]);
 		}
 	}
@@ -71,20 +71,26 @@ contract AIProposalAdvisor {
 		string memory response,
 		string memory /*errorMessage*/
 	) public onlyOracle {
-		if (!isLastCharYN(response)) {
-			proposals[proposalId].iteration++;
-			if (proposals[proposalId].iteration < maxIterations) {
-				IOracle(oracleAddress).createLlmCall(proposalId);
-				return;
-			}
-		}
+		// if (!isLastCharYN(response)) {
+		// 	proposals[proposalId].iteration++;
+		// 	if (proposals[proposalId].iteration < maxIterations) {
+		// 		IOracle(oracleAddress).createLlmCall(proposalId);
+		// 		return;
+		// 	}
+		// }
 		proposals[proposalId].advice = response;
 		proposals[proposalId].isResolved = true;
 	}
 
 	function getProposalAdvice(uint proposalId) public view returns (string memory) {
-		// require (proposals[proposalId].isResolved, "Proposal is not resolved");
-		return proposals[proposalId].advice;
+		for (uint i = 0; i < proposals.length; i++) {
+			if (proposals[i].id == proposalId) {
+				// require(proposals[i].isResolved, "Proposal is not resolved");
+				return proposals[i].advice;
+			}
+		}
+		require (false, "Proposal not found");
+		return "Proposal not found";
 	}
 
 	function getMessageHistoryContents(uint proposalId) public view returns (string[] memory) {
