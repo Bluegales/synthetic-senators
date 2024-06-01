@@ -18,7 +18,7 @@ contract AIProposalAdvisor {
 	uint immutable public maxIterations = 5;
 
 	struct Proposal {
-		uint id;
+		uint256 id;
 		string description;
 		string summarizedDescription;
 		string advice;
@@ -57,40 +57,32 @@ contract AIProposalAdvisor {
 		emit OracleAddressUpdated(newOracleAddress);
 	}
 
-	function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public {
+	function submitProposals(string[] memory proposalDescriptions, uint256[] memory proposalIds) public {
 		require(proposalDescriptions.length == proposalIds.length, "Proposal descriptions and IDs must have the same length");
 		for (uint i = 0; i < proposalDescriptions.length; i++) {
 			proposals.push(Proposal(proposalIds[i], proposalDescriptions[i], "", "", 0, false, false));
-			IOracle(oracleAddress).createLlmCall(proposalIds[i]);
+			IOracle(oracleAddress).createLlmCall(proposals.length - 1);
 		}
 	}
 
 	// @todo handle errors: standard error message for every agent?
 	function onOracleLlmResponse(
-		uint proposalId,
+		uint index,
 		string memory response,
 		string memory /*errorMessage*/
 	) public onlyOracle {
 		if (!isLastCharYN(response)) {
-			proposals[proposalId].iteration++;
-			if (proposals[proposalId].iteration < maxIterations) {
-				IOracle(oracleAddress).createLlmCall(proposalId);
+			proposals[index].iteration++;
+			if (proposals[index].iteration < maxIterations) {
+				IOracle(oracleAddress).createLlmCall(proposals[index].id);
 				return;
 			}
-			else {
-				proposals[proposalId].isResolved = true;
-				proposals[proposalId].advice = "Cannot answer the question.";
-			}
 		}
-		for (uint i = 0; i < proposals.length; i++) {
-			if (proposals[i].id == proposalId) {
-				proposals[i].isResolved = true;
-				proposals[i].advice = response;
-			}
-		}
+		proposals[index].isResolved = true;
+		proposals[index].advice = response;
 	}
 
-	function getProposalAdvice(uint proposalId) public view returns (string memory) {
+	function getProposalAdvice(uint256 proposalId) public view returns (string memory) {
 		for (uint i = 0; i < proposals.length; i++) {
 			if (proposals[i].id == proposalId) {
 				// require(proposals[i].isResolved, "Proposal is not resolved");
@@ -101,7 +93,7 @@ contract AIProposalAdvisor {
 		return "Proposal not found";
 	}
 
-	function setVoted(uint proposalId) public {
+	function setVoted(uint256 proposalId) public {
 		for (uint i = 0; i < proposals.length; i++) {
 			if (proposals[i].id == proposalId) {
 				proposals[i].isVoted = true;
@@ -110,13 +102,13 @@ contract AIProposalAdvisor {
 		require (false, "Proposal not found");
 	}
 
-	function getMessageHistoryContents(uint proposalId) public view returns (string[] memory) {
+	function getMessageHistoryContents(uint256 proposalId) public view returns (string[] memory) {
 		string[] memory messages = new string[](1);
 		messages[0] = concatenateStrings(instruction, proposals[proposalId].description);
 		return messages;
 	}
 
-	function getMessageHistoryRoles(uint proposalId) public pure returns (string[] memory) {
+	function getMessageHistoryRoles(uint256 proposalId) public pure returns (string[] memory) {
 		proposalId = proposalId;
 		string[] memory roles = new string[](1);
 		roles[0] = "system";
