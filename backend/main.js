@@ -399,7 +399,6 @@ const main = async () => {
 }
 
 const submitTransactionManually = async (transactionObject) => {
-	console.log("transaction: ", transactionObject);
 	const transactionResponse = await wallet.sendTransaction(transactionObject);
 	await transactionResponse.wait();
 	console.log('	Successfully submitted transaction:', transactionResponse.hash);
@@ -410,13 +409,13 @@ const test = async () => {
 	const nonce = await provider.getTransactionCount(wallet.address);
 	const transactionObject = {
 		transactionData: {
-			data: data,
-			to: contractAddress,
+			data: data.data,
+			to: '0x709E5941Ae771C642Ed78161495aD093261bb3AA',
 			nonce: nonce,
 			chainId: 696969
 		}
 	}
-	submitTransactionManually(transactionObject);
+	submitTransactionManually(transactionObject.transactionData);
 }
 
 const getAllProposals = async () => {
