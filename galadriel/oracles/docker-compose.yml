@@ -1,6 +1,0 @@
-services:
-  oracle:
-    build: .
-    ports:
-      - "9000:8000"
-    restart: "unless-stopped"
