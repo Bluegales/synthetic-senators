@@ -15,6 +15,7 @@ const abi = [
 	"function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
 	"function getProposalAdvice(uint proposalId) public view returns (string memory)",
 	"function test() public view returns (string memory)",
+	"function getProposalCount() public view returns (uint256)",
 	{
 		"inputs": [
 		  {
@@ -134,6 +135,35 @@ const contract = new ethers.Contract(contractAddress, abi, signer);
 
 // dao contract initialization
 const daoAbi = [
+	{
+		"type": "function",
+		"name": "castVoteWithReason",
+		"inputs": [
+			{
+				"name": "proposalId",
+				"type": "uint256",
+				"internalType": "uint256"
+			},
+			{
+				"name": "support",
+				"type": "uint8",
+				"internalType": "uint8"
+			},
+			{
+				"name": "reason",
+				"type": "string",
+				"internalType": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256",
+				"internalType": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable"
+	},
 ];
 const daoContractAddress = '0x59c6765e180ba50FaD3f089e6D26cDeb5eaC9CdA';
 const daoProvider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
@@ -266,10 +296,26 @@ const getCurrentSepoliaBlock = async () => {
 	const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
 	const currentBlock = await provider.getBlockNumber();
 	return currentBlock;
+	// return 6013312;
 }
 
-const voteOnProposal = async (proposalId, vote) => {
-	
+const castVote = async (proposalId, support, reason) => {
+	try {
+		const transactionResponse = await daoContract.castVoteWithReason(proposalId, support, reason);
+		await transactionResponse.wait();
+		console.log('	Successfully cast vote:', transactionResponse.hash);
+	} catch (error) {
+		console.error('	Error casting vote:', error);
+	}
+}
+
+const getProposalCount = async () => {
+	try {
+		return await contract.getProposalCount();
+	}
+	catch (error) {
+		console.error('	Error getting proposal count:', error);
+	}
 }
 
 // // Schedule the contract call to occur once per second
@@ -301,8 +347,8 @@ const main = async () => {
 		else {
 			console.log("New proposals found. Amount: ", newProposals.result.length, "proposals");
 			const prevAmount = proposals.length;
+			const currentBlock = await getCurrentSepoliaBlock();
 			for (let i = 0; i < newProposals.result.length; i++) {
-				const currentBlock = await getCurrentSepoliaBlock();
 				const decodedData = decodeEventLog(newProposals.result[i].data);
 				if (decodedData.voteStart < currentBlock && decodedData.voteEnd > currentBlock) {
 					proposals.push(new Proposal(decodedData.proposalId, decodedData.description, "", "", 0, false, false));
@@ -314,15 +360,28 @@ const main = async () => {
 			if (proposals.length > prevAmount) {
 				console.log("\nSubmitting proposals to Galadriel contract....")
 				await submitProposals([proposals[proposals.length - 1].description], [proposals[proposals.length - 1].id]);
-				await new Promise(r => setTimeout(r, 5000));
-				console.log("Getting advice from Galadriel contract....")
-				for (let i = prevAmount; i < proposals.length; i++) {
-					proposals[i].advice = await getAdvice(proposals[i].id);
-					if (proposals[i].advice.slice(-1) == "Y") {
-						proposals[i].isVoted = true;
+				const lastProposal = await getProposalCount() - BigInt(1);
+				while (1) {
+					const proposal = await getProposal(lastProposal);
+					if (proposal.isResolved) {
+						console.log("Proposal resolved. Advice: ", proposal.advice);
+						break;
 					}
-					else if (proposals[i].advice.slice(-1) == "N") {
-						proposals[i].isVoted = false;
+					await new Promise(r => setTimeout(r, 2000));
+				}
+				for (let i = 0; i < proposals.length; i++) {
+					console.log("Voting for proposal: ", proposals[i].id);
+					proposals[i].advice = await getAdvice(proposals[i].id);
+					const string = proposals[i].advice;
+					const words = string.split(' ');
+					const lastWord = words[words.length - 2];
+					console.log("last word: ", lastWord)
+					if (lastWord == "Y") {
+						castVote(proposals[i].id, 1, proposals[i].advice);
+					}
+					else if (lastWord == "N") {
+						console.log("casting vote...")
+						castVote(proposals[i].id, 0, proposals[i].advice);
 					}
 					else {
 						console.log("Invalid advice: ", proposals[i].advice);
@@ -341,13 +400,8 @@ const main = async () => {
 
 const test = async () => {
 	var i = 0;
-	while (1) {
-		const advice = await getProposal(i);
-		console.log(advice);
-		i++;
-	}
 }
 
-test();
-// main();
+// test();
+main();
 
