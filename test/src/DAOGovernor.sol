@@ -18,11 +18,11 @@ contract DAOGovernor is
     ) Governor("DAOGovernor") GovernorVotes(_token) GovernorVotesQuorumFraction(0) {}
 
     function votingDelay() public pure override returns (uint256) {
-        return 10; // 1 day
+        return 0; // 1 day
     }
 
     function votingPeriod() public pure override returns (uint256) {
-        return 10; // 1 week
+        return 5; // 1 week
     }
 
     function proposalThreshold() public pure override returns (uint256) {
