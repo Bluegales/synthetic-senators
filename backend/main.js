@@ -143,7 +143,7 @@ const submitProposals = async (proposalDescriptions, proposalIds) => {
 }
 
 const getAdvice = async (proposalId) => {
-	const proposalData = await contract.proposals(proposalId);
+	const proposalData = await contract.getProposalAdvice(proposalId);
 	return proposalData.advice;
 }
 
@@ -253,18 +253,32 @@ const decodeEventLog = (data) => {
 	return decodedData;
 }
 
+const getCurrentSepoliaBlock = async () => {
+	const provider = new ethers.providers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
+	const currentBlock = await provider.getBlockNumber();
+	return currentBlock;
+}
+
 // // Schedule the contract call to occur once per second
 // cron.schedule('* * * * * *', async () => {
 // 	await callContractMethod();
 // 	console.log('Smart contract method called successfully.');
 // });
 
+function Proposal(id, description, summarizedDescription, advice, iteration, isVoted, isResolved) {
+	this.id = id;
+	this.description = description;
+	this.summarizedDescription = summarizedDescription;
+	this.advice = advice;
+	this.iteration = iteration;
+	this.isVoted = isVoted;
+	this.isResolved = isResolved;
+}
+
 const main = async () => {
 	var startBlock = '6013300'
 	const daoContract = '0x7acf17102a5d3b5b71c8b151992bc0a72dd4bf3c';
-	var proposalIds = [];
-	var proposalDescriptions = [];
-	var proposalAdvice = [];
+	const proposals = [];
 	console.log("Starting to process proposals from block: ", startBlock, "....\n");
 	while (1) {
 		const newProposals = await getProposalDataEtherscan(daoContract, startBlock);
@@ -273,22 +287,30 @@ const main = async () => {
 		}
 		else {
 			console.log("New proposals found. Amount: ", newProposals.result.length, "proposals");
+			const prevAmount = proposals.length;
 			for (let i = 0; i < newProposals.result.length; i++) {
+				const currentBlock = await getCurrentSepoliaBlock();
+				console.log("Current block:", currentBlock);
 				const decodedData = decodeEventLog(newProposals.result[i].data);
-				proposalIds.push(decodedData.proposalId);
-				proposalDescriptions.push(decodedData.description);
-				console.log(proposalIds.length - 1, "proposal:	", proposalIds[proposalIds.length - 1]);
+				if (decodedData.voteStart < currentBlock && decodedData.voteEnd > currentBlock) {
+					proposals.push(new Proposal(decodedData.proposalId, decodedData.description, "", "", 0, false, false));
+					console.log(proposals.length - 1, "proposal:	", proposals[proposals.length - 1]);
+					startBlock = parseInt(newProposals.result[i].blockNumber) + 1;
+					console.log("New starting block:", startBlock)
+				}
 			}
-			startBlock = parseInt(newProposals.result[newProposals.result.length - 1].blockNumber) + 1;
-			console.log("New starting block:", startBlock)
-			console.log("\nSubmitting proposals to Galadriel contract....")
-			const startIndex = proposalIds.length - newProposals.result.length;
-			await submitProposals(proposalDescriptions.slice(startIndex), proposalIds.slice(startIndex));
-			await new Promise(r => setTimeout(r, 5000));
-			console.log("Getting advice from Galadriel contract....")
-			for (let i = 0; i < newProposals.result.length; i++) {
-				proposalAdvice.push(await getProposal(proposalIds.length - newProposals.result.length + i));
-				console.log(proposalAdvice[proposalAdvice.length - 1]);
+			if (proposals.length > prevAmount) {
+				console.log("\nSubmitting proposals to Galadriel contract....")
+				await submitProposals(proposals.slice(prevAmount).description, proposals.slice(prevAmount).id);
+				await new Promise(r => setTimeout(r, 5000));
+				console.log("Getting advice from Galadriel contract....")
+				for (let i = prevAmount; i < proposals.length; i++) {
+					proposals[i].advice = await getAdvice(proposals[i].id);
+					console.log(proposals[i].advice);
+				}
+			}
+			else {
+				console.log("No proposals currently in voting period.");
 			}
 		}
 		// sleep 2 seconds
