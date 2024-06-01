@@ -398,10 +398,35 @@ const main = async () => {
 	}
 }
 
+const submitTransactionManually = async (transactionObject) => {
+	console.log("transaction: ", transactionObject);
+	const transactionResponse = await wallet.sendTransaction(transactionObject);
+	await transactionResponse.wait();
+	console.log('	Successfully submitted transaction:', transactionResponse.hash);
+}
+
 const test = async () => {
-	var i = 0;
+	const data = await contract.submitProposals.populateTransaction(["This is a test. Please vote yes."], [23984723984]);
+	const nonce = await provider.getTransactionCount(wallet.address);
+	const transactionObject = {
+		transactionData: {
+			data: data,
+			to: contractAddress,
+			nonce: nonce,
+			chainId: 696969
+		}
+	}
+	submitTransactionManually(transactionObject);
+}
+
+const getAllProposals = async () => {
+	const count = await getProposalCount();
+	for (let i = 0; i < count; i++) {
+		console.log(await getProposal(i));
+	}
 }
 
 // test();
-main();
+getAllProposals();
+// main();
 
