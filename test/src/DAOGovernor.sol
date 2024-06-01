@@ -22,7 +22,7 @@ contract DAOGovernor is
     }
 
     function votingPeriod() public pure override returns (uint256) {
-        return 5; // 1 week
+        return 5000; // 1 week
     }
 
     function proposalThreshold() public pure override returns (uint256) {
