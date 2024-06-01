@@ -2,6 +2,8 @@ const advisorContractABI = [
     "function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
     "function getProposalAdvice(uint proposalId) public view returns (string memory)",
     "function test() public view returns (string memory)",
+    "function getProposalCount() public view returns (uint256 count)",
+    "function instruction() public view returns (string instruction)",
     {
       "inputs": [
         {
