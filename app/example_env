@@ -1,0 +1,5 @@
+REACT_APP_SEPOLIA_RPC_URL=https://ethereum-sepolia.rpc.subquery.network/public
+REACT_APP_GALADRIEL_RPC_URL=https://devnet.galadriel.com
+REACT_APP_TALLY_API_KEY=xxxxxx
+REACT_APP_ADVISOR_CONTRACT_ADDRESS=xxxxx
+REACT_APP_PRIVATE_KEY=xxxxx

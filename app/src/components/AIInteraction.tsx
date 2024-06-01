@@ -1,15 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import Modal from './Modal';
 import SuccessModal from './SuccessModal';
 import { DAO, Person } from '../types';
+import advisorContractABI from '../abis/advisorContractABI';
 
 const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> = ({ dao, person, onBack }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [advice, setAdvice] = useState<string>('');
+  const [proposalDescription, setProposalDescription] = useState<string>('');
 
-  const handleDelegate = async () => {
+  let contract: ethers.Contract | null = null;
+
+  try {
+    const contractAddress = process.env.REACT_APP_ADVISOR_CONTRACT_ADDRESS!;
+    const provider = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_GALADRIEL_RPC_URL);
+    contract = new ethers.Contract(contractAddress, advisorContractABI, provider);
+  } catch (error) {
+    console.error('Error initializing contract:', error);
+    setErrorMessage('Failed to initialize contract. Please check the contract address and provider URL.');
+    setIsError(true);
+  }
+
+  const getProposalData = async (proposalId: number) => {
+    if (!contract) return { advice: 'Failed to fetch advice due to contract initialization error.', description: 'Failed to fetch proposal description.' };
+    try {
+      const proposalData = await contract.proposals(proposalId);
+      return { advice: proposalData.advice, description: proposalData.description };
+    } catch (error) {
+      console.error('Error fetching proposal data:', error);
+      return { advice: 'Failed to fetch advice.', description: 'Failed to fetch proposal description.' };
+    }
+  };
+
+  useEffect(() => {
+    const fetchProposalData = async () => {
+      const { advice, description } = await getProposalData(0); // Replace with the actual proposal ID. Currently mocked for the first
+      setAdvice(advice);
+      setProposalDescription(description);
+    };
+
+    fetchProposalData();
+  }, [contract]);
+
+  const handleDelegate = () => {
     setIsModalOpen(true);
   };
 
@@ -18,7 +55,6 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
     setErrorMessage('');
   };
 
-  
   const handleConfirm = async () => {
     setIsModalOpen(false);
 
@@ -33,7 +69,6 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
       });
 
       if (!response.ok) {
-      // if (response.ok) { //comment this out to always get the modal
         throw new Error('Delegation failed');
       }
 
@@ -64,15 +99,15 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
         </div>
       </div>
       <div className="chatbot mb-6 p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
-        <p>Chatbot conversation here...</p>
+        <p>{advice}</p>
       </div>
       <div className="last-proposal p-4 bg-slate-200 rounded-lg shadow-md text-slate-900 w-full">
         <h3 className="text-xl font-bold mb-2">Last Proposal</h3>
-        <p>Last Proposal Content</p>
+        <p>{proposalDescription}</p>
       </div>
       <br />
       <button className="mb-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={onBack}>Back</button>
-      
+
       {isError && (
         <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
           {errorMessage}
