@@ -19,7 +19,7 @@ Rest of this README assumes you are in the `galadriel` directory.
 
 **Deploy custom AI Advisor to Galadriel testnet**
 
-Go to the `scripts` directory and open `deployAIProposalAdvisor.ts` file.<br>:
+Go to the `scripts` directory and open `deployAIProposalAdvisor.ts` file.<br>
 Modify the `instruction` and `name` variables to represent your personal DAO voting interests. We recommend to keep the format from the example.
 
 Run the following command to deploy the AI Advisor to the Galadriel testnet:
