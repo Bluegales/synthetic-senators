@@ -1,0 +1,13 @@
+{
+  "transactions": [
+    {
+      "rpc": "https://ethereum-sepolia.rpc.subquery.network/public"
+    },
+    {
+      "rpc": "https://ethereum-sepolia.rpc.subquery.network/public"
+    },
+    {
+      "rpc": "https://ethereum-sepolia.rpc.subquery.network/public"
+    }
+  ]
+}
