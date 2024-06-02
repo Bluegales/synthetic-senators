@@ -1,14 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
 import "./interfaces/IOracle.sol";
 
-// Oracle contract fetches messages from this contract (callback), therefore messages aren't explicitly passed to the oracle
-// @todo add restriction to prevent anyone from calling getProposalAdvise
-// @note making this an agent (looping) is necessary to win a prize!
-// @todo add option to submit multiple proposals at once
 contract AIProposalAdvisor {
 
 	address private owner;
@@ -53,6 +47,7 @@ contract AIProposalAdvisor {
 		emit OracleAddressUpdated(newOracleAddress);
 	}
 
+	// Submits an array of proposals to the advisor, then creates an LLM call for each proposal
 	function submitProposals(string[] memory proposalDescriptions, uint256[] memory proposalIds) public {
 		require(proposalDescriptions.length == proposalIds.length, "Proposal descriptions and IDs must have the same length");
 		for (uint i = 0; i < proposalDescriptions.length; i++) {
@@ -61,7 +56,8 @@ contract AIProposalAdvisor {
 		}
 	}
 
-	// @todo handle errors: standard error message for every agent?
+	// Called by the oracle when it receives a response. If the response doesn't 
+	// have Y or N as the last char, the proposal is re-submitted
 	function onOracleLlmResponse(
 		uint index,
 		string memory response,
@@ -81,7 +77,7 @@ contract AIProposalAdvisor {
 	function getProposalAdvice(uint256 proposalId) public view returns (string memory) {
 		for (uint i = 0; i < proposals.length; i++) {
 			if (proposals[i].id == proposalId) {
-				// require(proposals[i].isResolved, "Proposal is not resolved");
+				require(proposals[i].isResolved, "Proposal is not resolved");
 				return proposals[i].advice;
 			}
 		}
@@ -129,35 +125,3 @@ contract AIProposalAdvisor {
 		}
 	}
 }
-
-
-	// function getProposalAdvise(string memory message) public returns (uint i) {
-	// 	IOracle(oracleAddress).createLlmCall(chatCount);
-	// 	chatCount = chatCount + 1;
-
-	// 	return chatCount - 1;
-	// }
-
-	// function onOracleLlmResponse(
-	// 	uint runId,
-	// 	string memory response,
-	// 	string memory /*errorMessage*/
-	// ) public onlyOracle {
-	// 	chatResponses[runId] = response;
-	// }
-
-	// function getMessageHistoryContents(uint chatId) public view returns (string[] memory) {
-	// 	string[] memory messages = new string[](chatRuns[chatId].messages.length);
-	// 	for (uint i = 0; i < chatRuns[chatId].messages.length; i++) {
-	// 		messages[i] = chatRuns[chatId].messages[i].content;
-	// 	}
-	// 	return messages;
-	// }
-
-	// function getMessageHistoryRoles(uint chatId) public view returns (string[] memory) {
-	// 	string[] memory roles = new string[](chatRuns[chatId].messages.length);
-	// 	for (uint i = 0; i < chatRuns[chatId].messages.length; i++) {
-	// 		roles[i] = chatRuns[chatId].messages[i].role;
-	// 	}
-	// 	return roles;
-	// }

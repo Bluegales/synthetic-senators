@@ -1,13 +1,10 @@
-// Import ethers from Hardhat package
-import readline from "readline";
-
 const {ethers} = require("hardhat");
 
 async function main() {
   const contractABI = [
     "function submitProposals(string[] memory proposalDescriptions, uint[] memory proposalIds) public",
     "function getProposalAdvice(uint proposalId) public view returns (string memory)",
-    "function test() public view returns (string memory)",
+    "function getProposalCount() public view returns (uint256)",
     {
       "inputs": [
         {
@@ -70,31 +67,28 @@ async function main() {
   const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
   // The proposal that advise should be generated for
-  const message = 'Do you think that the government should implement a universal basic income?'
-  const message2 = "Is democracy the best form of government?"
+  const message = 'Do you think that the DAO should take out 500k from the treasury to do a community event?'
 
-  /* The comment `// Call the startChat function` is indicating that the code is about to call a
-  function named `startChat` on the contract instance. However, in the provided code snippet, there
-  is no function named `startChat` being called. It seems like there might be a mistake in the
-  comment or the code itself. */
-  // Call the startChat function
-  const transactionResponse = await contract.submitProposals([message], [1000]);
+  // Submit the proposal to the advisor
+  const transactionResponse = await contract.submitProposals([message], [420]);
   const receipt = await transactionResponse.wait();
   console.log(`Transaction sent, hash: ${receipt.hash}.\nExplorer: https://explorer.galadriel.com/tx/${receipt.hash}`)
   console.log(`Proposal advise on message: "${message}"`);
 
-  // sleep for 5 seconds
+  // get the number of proposals
+  const proposalCount = await contract.getProposalCount();
+
+  // sleep for 5 seconds to allow the advisor to give advice
   await new Promise(r => setTimeout(r, 5000));
+
+  // log all proposals + advice into the console
   console.log("all proposals: ");
   var i = 0;
-  while (1) {
+  while (i < proposalCount) {
     const response = await contract.proposals(i);
     console.log(response);
     i++;
   }
-
-  // console.log(`Advise given: ${newResponse}`)
-
 }
 
 main()

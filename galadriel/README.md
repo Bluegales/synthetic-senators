@@ -1,107 +1,41 @@
-# Contracts setup
+# Setup A Custom AI Advisor
 
-## Setup
+This guide will show you how to deploy a custom AI Advisor to the Galadriel testnet and interact with it.
 
-**Install dependencies**
+## Install dependencies
 
 ```
-cd contracts
 cp template.env .env
 npm install
 ```
 
-Modify .env and add your private key for relevant network  
-`PRIVATE_KEY_LOCALHOST` for local node
+Modify .env and add your data.<br>
+`ORACLE_ADDRESS` for Galadriel testnet LLM oracle<br>
 `PRIVATE_KEY_GALADRIEL` for Galadriel testnet
 
-Rest of this README assumes you are in the `contracts` directory
+Rest of this README assumes you are in the `galadriel` directory.
 
 ## Deployment
 
-### Local
+**Deploy custom AI Advisor to Galadriel testnet**
 
-**Run local network**
+Go to the `scripts` directory and open `deployAIProposalAdvisor.ts` file.<br>:
+Modify the `instruction` and `name` variables to represent your personal DAO voting interests. We recommend to keep the format from the example.
 
+Run the following command to deploy the AI Advisor to the Galadriel testnet:
 ```
-npm run node
-```
-
-This runs a chain on: http://localhost:8545  
-Chain ID: 1337
-
-Take some private key from local node and add to .env `PRIVATE_KEY_LOCALHOST`
-
-**Deploy the oracle contract and all examples to local network**
-
-```
-npm run deployAll:localhost
+npx hardhat run scripts/deployAIProposalAdvisor.ts --network galadriel
 ```
 
-**Run the oracle backend**
+## Usage
 
-Please see the [`oracles` directory](/oracles) to run the oracle backend. If you don't run the oracle back-end, the oracle contracts on your localnet will not produce any results (and will not make any callbacks).
+**Interact with the AI Advisor**
 
-### Galadriel testnet
+Modify .env and add your AI Advisor address to `AI_ADVISOR_ADDRESS`.<br>
 
-Update `.env`:
-* Add your private key to `PRIVATE_KEY_GALADRIEL`
-* Add the [oracle address](http://docs.galadriel.com/oracle-address) to `ORACLE_ADDRESS`
-
-**Deploy quickstart to Galadriel testnet**
-
+Run the following command to call the AI Advisor, submit a proposal and get the advice:
 ```
-npm run deployQuickstart
+npx hardhat run scripts/callAIProposalAdvisor.ts --network galadriel
 ```
 
-**Deploy the oracle contract and all examples to Galadriel testnet**
-
-```
-npm run deployAll:galadriel
-```
-
-
-## Whitelisting a Wallet in the Oracle Contract
-
-To whitelist an address in the Oracle contract, allowing it to write responses on-chain, you can use the `whitelist` Hardhat task.
-
-Run the following command, replacing `[oracle_address]` with the Oracle contract's address and `[wallet_address]` with the address you want to whitelist:
-
-```bash
-npx hardhat whitelist --oracle-address [oracle_address] --whitelist-address [wallet_address] --network galadriel
-```
-
-### Generating standard Solidity input JSON
-
-This is useful for verifying contracts on the explorer, 
-using the "Standard JSON input" option.  
-
-```bash
-npm run generateStandardJson
-```
-
-This generated JSON files are in `./contracts/artifacts/solidity-json/contracts`
-
-### Running e2e validation tests
-
-**Deploy test contract to relevant network**
-```
-npm run deployTest:localhost
-```
-```
-npm run deployTest:galadriel
-```
-
-**Single run**
-```
-npx hardhat e2e --contract-address <Test contract address> --oracle-address <oracle contract address> --network <network>
-```
-
-**Cron job with Slack**
-```
-ts-node tasks/e2eCron.ts
-```
-
-**Cron job with Slack in docker**
-```
-docker compose -f docker/docker-compose-e2e.yml up --build -d
-```
+You can look into the script to see how to call the different functions.
