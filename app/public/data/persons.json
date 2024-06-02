@@ -5,7 +5,8 @@
       "image": "images/personas/daonald-dump.png",
       "name": "DAOnald Dump",
       "description": "A businessman, known for his skepticism towards cryptocurrencies. He has concerns about the potential for digital currencies to facilitate illegal activities.",
-      "contractAddress": "0xB65E1E617C01F8eB087B4657eAe688Ec66D0534E"
+      "contractAddress": "0xB65E1E617C01F8eB087B4657eAe688Ec66D0534E",
+      "delegationAddress": "0x200E5a07F65Cf59547D8c89284Ae69Cd03daB3f7"
     },
     {
       "type": "person",
@@ -13,7 +14,8 @@
       "image": "images/personas/joe-aiden.png",
       "name": "Joe AIden",
       "description": "A career politician, known for a more cautious approach to cryptocurrencies, emphasizing the need for regulatory oversight to protect investors and ensure financial stability.",
-      "contractAddress": "0xf25b4f014AEE385320Afb753B3638177DA6CAB43"
+      "contractAddress": "0xf25b4f014AEE385320Afb753B3638177DA6CAB43",
+      "delegationAddress": "0x300dc52d3506A2d25A6306270df8a4f662f9122e"
     },
     {
       "type": "person",
@@ -21,7 +23,8 @@
       "image": "images/personas/mahatma-ghandao.png",
       "name": "Mahatma GhanDAO",
       "description": "A revered leader and advocate for nonviolent resistance, known for his commitment to simplicity, self-sufficiency, and ethical living.",
-      "contractAddress": "0xeBFdea5C5253E52eC2E3A1e4b95b0eC14244Fb8A"
+      "contractAddress": "0xeBFdea5C5253E52eC2E3A1e4b95b0eC14244Fb8A",
+      "delegationAddress": "0x400016103A39446C317a9b95F72e4256B570A913"
     },
     {
       "type": "person",
@@ -29,6 +32,7 @@
       "image": "images/personas/vitailik-buterin.png",
       "name": "VitAIlik Buterin",
       "description": "A visionary programmer and co-founder of Ethereum, known for his innovations in blockchain technology. Vitalik Buterin advocates for the transformative potential of cryptocurrencies, emphasizing transparency, security, and decentralization.",
-      "contractAddress": "0x4fD1234741028Adc400f57e7320281ACbA5EA36E"
+      "contractAddress": "0x4fD1234741028Adc400f57e7320281ACbA5EA36E",
+      "delegationAddress": "0x100B974e163DBFb76CEFe1362E617694F4c2d8Af"
     }
 ]
