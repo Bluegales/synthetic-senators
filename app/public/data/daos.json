@@ -2,28 +2,28 @@
     {
       "type": "dao",
       "id": 1,
-      "description": "Hi, it's me. MahatmAI GhanDAO. The one and only DAO you need",
-      "name": "MahatmAI DAO",
+      "description": "An experimential DAO that is governed by AIs.",
+      "name": "SyntheticSenatorsDAO",
       "image": "images/step4.png"
     },  
     {
       "type": "dao",
       "id": 2,
-      "description": "The Uniswap token enables community ownership and active stewardship of the Protocol. UNI holders govern the Protocol through an on-chain governance process.",
+      "description": "UNI token holders govern the Uniswap Protocol through an on-chain governance process, enabling community ownership and active stewardship.",
       "name": "UniSwap",
       "image": "images/daos/uniswap.png"
     },
     {
       "type": "dao",
       "id": 3,
-      "description": "The ENS Foundation is a Foundation Company Limited By Guarantee, incorporated in the Cayman Islands. Foundation companies are nonprofits; The ENS Foundation has no shareholders and cannot pay out dividends to its directors or members",
+      "description": "The ENS Foundation, a nonprofit incorporated in the Cayman Islands, has no shareholders and cannot pay dividends.",
       "name": "ENS",
       "image": "images/daos/ens.png"
     },
     {
       "type": "dao",
       "id": 4,
-      "description": "Nouns are an experimental attempt to improve the formation of on-chain avatar communities. While projects such as CryptoPunks have attempted to bootstrap digital community and identity, Nouns attempt to bootstrap identity, community, governance, and a treasury that can be used by the community",
+      "description": "Nouns aim to enhance on-chain avatar communities by bootstrapping identity, community, governance, and a communal treasury, unlike projects like CryptoPunks.",
       "name": "NOUNS",
       "image": "images/daos/nouns.png"
     }
