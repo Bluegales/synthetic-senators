@@ -1,0 +1,153 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/luca/Desktop/HackFS/DAOtik-AIwar/galadriel/contracts/AIProposalAdvisor.sol": {
+      "lastModificationDate": 1717264896033,
+      "contentHash": "adce670ae1c7d4dc93cc96363ff93042",
+      "sourceName": "contracts/AIProposalAdvisor.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IOracle.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "AIProposalAdvisor"
+      ]
+    },
+    "/Users/luca/Desktop/HackFS/DAOtik-AIwar/galadriel/contracts/interfaces/IOracle.sol": {
+      "lastModificationDate": 1717264896037,
+      "contentHash": "fa0fc2f55b2c857c6307c7e4d0eec510",
+      "sourceName": "contracts/interfaces/IOracle.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.13"
+      ],
+      "artifacts": [
+        "IOracle"
+      ]
+    },
+    "/Users/luca/Desktop/HackFS/DAOtik-AIwar/galadriel/contracts/interfaces/IChatGpt.sol": {
+      "lastModificationDate": 1717264896037,
+      "contentHash": "20a77353a0bbebe6540af72503cac9ad",
+      "sourceName": "contracts/interfaces/IChatGpt.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IOracle.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.13"
+      ],
+      "artifacts": [
+        "IChatGpt"
+      ]
+    },
+    "/Users/luca/Desktop/HackFS/DAOtik-AIwar/galadriel/contracts/Summarizer.sol": {
+      "lastModificationDate": 1717264896036,
+      "contentHash": "d41d8cd98f00b204e9800998ecf8427e",
+      "sourceName": "contracts/Summarizer.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
+    }
+  }
+}
