@@ -359,7 +359,7 @@ const main = async () => {
 			}
 			if (proposals.length > prevAmount) {
 				console.log("\nSubmitting proposals to Galadriel contract....")
-				// await submitProposals([proposals[proposals.length - 1].description], [proposals[proposals.length - 1].id]);
+				await submitProposals([proposals[proposals.length - 1].description], [proposals[proposals.length - 1].id]);
 				const lastProposal = await getProposalCount() - BigInt(1);
 				const proposal = await getProposal(lastProposal);
 				while (1) {
