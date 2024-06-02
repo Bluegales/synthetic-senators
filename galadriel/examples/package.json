@@ -1,0 +1,20 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "chat": "ts-node chat.ts",
+    "chat_vision": "ts-node chat_vision.ts",
+    "agent": "ts-node agent.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "ethers": "^6.11.1",
+    "dotenv": "^16.4.4"
+  }
+}
