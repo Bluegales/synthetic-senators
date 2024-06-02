@@ -1,6 +1,9 @@
 # Synthetic Senators
 Delegate your DAO voting power to customisable AI agents that vote on your behalf, fully decentralized using LIT Protocol and Galadriel.
 
+## Live Demo
+**[Synthetic-Senators.eth](https://synthetic-senators.eth.limo)**
+
 ## Description
 Our platform empowers users to delegate their DAO voting power to AI agents. Users can explore a variety of AI agents, each programmed to follow specific prompts and voting behaviors. 
 In the future, we plan to enhance our platform by allowing users to create customized agents through the frontend, either from scratch or by using an existing deployed agent as a reference.
@@ -9,6 +12,10 @@ Detailed information about each AI agent, including their prompt and responses t
 This transparency allows users to make an informed decision about which agent best represents their interests.
 
 Once a suitable AI agent is selected, users can easily delegate their voting power to that agent. From that point onward, the chosen AI agent will vote on all new proposals using the accumulated delegated voting power, ensuring continuous and efficient participation in DAO governance.
+
+## Screenshots
+<img src="screenshots/screen1.png" alt="Screen1" width="400"/>
+<img src="screenshots/screen3.png" alt="Screen3" width="400"/>
 
 ## Technical
 We start by creating a Lit Action and minting a Lit Programmable Key Pair (PKP) for it. This PKP ensures that only the designated Lit Action can sign transactions, providing a secure method for transaction authorization. The Lit Action continuously queries various DAOs for new proposals. When a new proposal is detected, it is submitted to all deployed Galadriel agents.

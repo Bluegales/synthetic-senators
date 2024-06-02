@@ -82,7 +82,7 @@ const Home: React.FC = () => {
                 <div className="flex flex-col items-center">
                   <img src="images/step4.png" alt="Step 4" className="mb-4" width="200px" />
                   <h3 className="text-xl font-bold mb-2">Step 4</h3>
-                  <p className="text-lg">Delegate your voice to MahatmAI GandhDAO</p>
+                  <p className="text-lg">Delegate your voice to a Synthetic Senator</p>
                 </div>
               </div>
             </section>
