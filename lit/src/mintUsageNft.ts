@@ -2,15 +2,15 @@ import { LitContracts } from '@lit-protocol/contracts-sdk';
 import { ethers } from "ethers";
 import LitJsSdk from "@lit-protocol/lit-node-client-nodejs";
 
-const privateKey = process.env.PRIVATE_KEY!;
-if (privateKey == undefined) {
+const privateKeyLit = process.env.PRIVATE_KEY_LIT!;
+if (privateKeyLit == undefined) {
     console.error("error no private key");
     process.exit(1);
 }
 const provider = new ethers.providers.JsonRpcProvider('https://chain-rpc.litprotocol.com/http')
 
 async function main() {
-    const wallet = new ethers.Wallet(privateKey, provider);
+    const wallet = new ethers.Wallet(privateKeyLit, provider);
   
     let contractClient = new LitContracts({
       signer: wallet,
