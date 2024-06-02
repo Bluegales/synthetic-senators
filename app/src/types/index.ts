@@ -11,5 +11,6 @@ export interface DAO {
     description: string;
     image: string;
     contractAddress: string;
+    delegationAddress: `0x${string}`;
   }
   

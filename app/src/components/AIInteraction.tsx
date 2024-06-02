@@ -150,7 +150,7 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
   const handleConfirm = async () => {
     setIsModalOpen(false);
     writeContract({
-      address: '0x5d1f03cdD89a2ec9CE9948dBB9Ba3DEb911e90D2',
+      address: person.delegationAddress,
       abi: contractABI,
       functionName: 'delegate',
       args: [
