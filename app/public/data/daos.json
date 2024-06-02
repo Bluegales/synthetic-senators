@@ -3,7 +3,7 @@
       "type": "dao",
       "id": 1,
       "description": "An experimential DAO that is governed by AIs.",
-      "name": "SyntheticSenatorsDAO",
+      "name": "SynSenDAO",
       "image": "images/step4.png"
     },  
     {
