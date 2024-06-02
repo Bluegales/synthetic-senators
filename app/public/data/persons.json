@@ -4,7 +4,7 @@
       "id": 1,
       "image": "images/personas/daonald-dump.png",
       "name": "DAOnald Dump",
-      "description": "A businessman, known for his skepticism towards cryptocurrencies. He has concerns about the potential for digital currencies to facilitate illegal activities.",
+      "description": "A businessman, known for his skepticism. He has concerns about the potential for digital currencies to facilitate illegal activities.",
       "contractAddress": "0xB65E1E617C01F8eB087B4657eAe688Ec66D0534E",
       "delegationAddress": "0x200E5a07F65Cf59547D8c89284Ae69Cd03daB3f7"
     },
