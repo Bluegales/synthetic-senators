@@ -1,0 +1,3 @@
+[submodule "custom-dao/lib/openzeppelin-contracts"]
+	path = custom-dao/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
