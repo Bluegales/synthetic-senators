@@ -62,9 +62,8 @@ async function main() {
 
     const { signatures, response } = results;
   
-    // sadly this doesn't work 
-    // the signature is valid but its always from a different address
-    // the lit team didn't come back to us in time.
+    // sadly this doesn't work for some reason
+    // the signature is valid but it its always from a different address
     // submitTransaction(response as unknown as object, signatures);
   
     // we have to sign it manually with a different address
