@@ -22,7 +22,6 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
   const [errorMessage, setErrorMessage] = useState('');
   const [adviceList, setAdviceList] = useState<AdviceItem[]>([]);
   const [instruction, setInstruction] = useState<string>("");
-  // const [proposalDescription, setProposalDescription] = useState<string>('');
 
   let contract: ethers.Contract | null = null;
 
@@ -36,7 +35,7 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
     setIsError(true);
   }
 
-  const getLastProposalData = async () => {
+  const getProposalData = async () => {
     const proposals : AdviceItem[] = [];
     if (!contract) {
       return [];
@@ -60,24 +59,6 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
     }
   };
   
-
-  // const getLastProposalData = async () => {
-  //   if (!contract) return { advice: 'Failed to fetch advice due to contract initialization error.', description: 'Failed to fetch proposal description.' };
-  //   try {
-  //     let proposalId = await contract.getProposalCount();
-  //     if (proposalId == 0) {
-  //       return { advice: 'Error: No proposals', description: 'Error: No proposals' };
-  //     } else {
-  //       proposalId -= 1;
-  //     }
-  //     const proposalData = await contract.proposals(proposalId);
-  //     return { advice: proposalData.advice, description: proposalData.description };
-  //   } catch (error) {
-  //     console.error('Error fetching proposal data:', error);
-  //     return { advice: 'Failed to fetch advice.', description: 'Failed to fetch proposal description.' };
-  //   }
-  // };
-
   const getInstruction = async () => {
     if (!contract) return { instruction: 'Failed to get instruction' };
     try {
@@ -91,43 +72,9 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
 
   useEffect(() => {
     const fetchProposalData = async () => {
-      const proposals = await getLastProposalData(); // Assuming this returns an array of proposals
-      // const processedProposals = proposals.map((proposal: any) => {
-      //   const { advice, description } = proposal;
-      //   const words = advice.split(' ');
-      //   const lastWord = words[words.length - 1];
-      //   let advicePositive = false;
-      //   if (lastWord === 'Y') {
-      //     advicePositive = true;
-      //     words.pop();
-      //   } else if (lastWord === 'N') {
-      //     advicePositive = false;
-      //     words.pop();
-      //   }
-      //   return {
-      //     advice: words.join(' '),
-      //     description,
-      //     advicePositive,
-      //   };
-      // });
+      const proposals = await getProposalData();
       setAdviceList(proposals);
     };
-    // const fetchProposalData = async () => {
-    //   const { advice, description } = await getLastProposalData();
-    //   setProposalDescription(description);
-    //   {
-    //     const words = advice.split(' ');
-    //     const lastWord = words[words.length - 1];
-    //     if (lastWord === 'Y') {
-    //       setAdvicePositive(true);
-    //       words.pop();
-    //     } else if (lastWord === 'N') {
-    //       setAdvicePositive(false);
-    //       words.pop();
-    //     }
-    //     setAdvice(words.join(' '));
-    //   }
-    // };
 
     const fetchInstruction = async () => {
       const instruction = await getInstruction();
@@ -150,11 +97,11 @@ const AIInteraction: React.FC<{ dao: DAO, person: Person, onBack: () => void }> 
   const handleConfirm = async () => {
     setIsModalOpen(false);
     writeContract({
-      address: person.delegationAddress,
+      address: '0xc7b2d61034Dd0eD582e04Dfa74c5214758B900f5',
       abi: contractABI,
       functionName: 'delegate',
       args: [
-        '0x3e6ddF30E936d17830aCfbdd16e6CdF9213Fce1E'
+        person.delegationAddress
       ]
     })
   };
