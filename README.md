@@ -1,8 +1,13 @@
-# Synthetic Senators
+<h1>Synthetic Senators 🤖</h1>
+<h3>Created for EthGlobal HackFS 2024</h3>
+
 Delegate your DAO voting power to customisable AI agents that vote on your behalf, fully decentralized using LIT Protocol and Galadriel.
 
-## Live Demo
+## Demo & Project Page
 **[Synthetic-Senators.eth](https://synthetic-senators.eth.limo)**
+**[Project Page](https://ethglobal.com/showcase/synthetic-senators-qoo23)**
+
+<img src="screenshots/prizes.png" alt="Prizes">
 
 ## Description
 Our platform empowers users to delegate their DAO voting power to AI agents. Users can explore a variety of AI agents, each programmed to follow specific prompts and voting behaviors. 
